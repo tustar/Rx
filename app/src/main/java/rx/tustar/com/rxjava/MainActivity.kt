@@ -1,7 +1,12 @@
 package rx.tustar.com.rxjava
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import com.tustar.rxjava.util.Logger
+import io.reactivex.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import rx.tustar.com.rxjava.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
@@ -16,4 +21,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
 }
