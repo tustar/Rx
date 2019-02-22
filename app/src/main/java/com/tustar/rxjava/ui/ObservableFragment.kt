@@ -1,10 +1,10 @@
-package rx.tustar.com.rxjava.ui.main
+package com.tustar.rxjava.ui
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.constraint.Group
-import android.support.v4.app.Fragment
-import android.support.v4.widget.ContentLoadingProgressBar
+import androidx.constraintlayout.widget.Group
+import androidx.fragment.app.Fragment
+import androidx.core.widget.ContentLoadingProgressBar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,16 +17,16 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
-import rx.tustar.com.rxjava.R
+import com.tustar.rxjava.R
 
 
-class MainFragment : Fragment() {
+class ObservableFragment : androidx.fragment.app.Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = ObservableFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: ObservableViewModel
     // View
     private lateinit var progressBar: ContentLoadingProgressBar
     private lateinit var countsView: TextView
@@ -42,14 +42,14 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.main_fragment, container, false).apply {
+        return inflater.inflate(R.layout.fragment_observable, container, false).apply {
             initViews(this)
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ObservableViewModel::class.java)
 
         RxJavaPlugins.setErrorHandler { throwable -> Logger.e(throwable.message) }
     }

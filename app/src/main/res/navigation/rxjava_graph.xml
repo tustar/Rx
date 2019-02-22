@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.tustar.rxjava.ui.MainFragment"
+        android:label="fragment_main_list"
+        tools:layout="@layout/fragment_main_list">
+        <action
+            android:id="@+id/action_to_observable"
+            app:destination="@id/demo1Fragment" />
+        <action
+            android:id="@+id/action_to_backpressure"
+            app:destination="@id/backpressure" />
+    </fragment>
+    <fragment
+        android:id="@+id/demo1Fragment"
+        android:name="com.tustar.rxjava.ui.ObservableFragment"
+        android:label="demo1_fragment"
+        tools:layout="@layout/fragment_observable" />
+    <fragment
+        android:id="@+id/backpressure"
+        android:name="com.tustar.rxjava.ui.BackPressureFragment"
+        android:label="fragment_backpressure"
+        tools:layout="@layout/fragment_backpressure" />
+</navigation>
