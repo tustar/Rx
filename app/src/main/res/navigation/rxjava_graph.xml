@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_mainFragment_to_movieFragment"
             app:destination="@id/retrofit" />
+        <action
+            android:id="@+id/action_to_okHttp"
+            app:destination="@id/okHttp" />
     </fragment>
     <fragment
         android:id="@+id/observable"
@@ -38,4 +41,9 @@
         android:name="com.tustar.rxjava.ui.retrofit.MovieFragment"
         android:label="fragment_movie_list"
         tools:layout="@layout/fragment_retrofit" />
+    <fragment
+        android:id="@+id/okHttp"
+        android:name="com.tustar.rxjava.ui.okhttp.OkHttpFragment"
+        android:label="fragment_ok_http"
+        tools:layout="@layout/fragment_ok_http" />
 </navigation>
