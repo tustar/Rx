@@ -12,13 +12,19 @@
         tools:layout="@layout/fragment_main_list">
         <action
             android:id="@+id/action_to_observable"
-            app:destination="@id/demo1Fragment" />
+            app:destination="@id/observable" />
         <action
             android:id="@+id/action_to_backpressure"
             app:destination="@id/backpressure" />
+        <action
+            android:id="@+id/action_to_retrofit"
+            app:destination="@id/retrofit" />
+        <action
+            android:id="@+id/action_mainFragment_to_movieFragment"
+            app:destination="@id/retrofit" />
     </fragment>
     <fragment
-        android:id="@+id/demo1Fragment"
+        android:id="@+id/observable"
         android:name="com.tustar.rxjava.ui.ObservableFragment"
         android:label="demo1_fragment"
         tools:layout="@layout/fragment_observable" />
@@ -27,4 +33,9 @@
         android:name="com.tustar.rxjava.ui.BackPressureFragment"
         android:label="fragment_backpressure"
         tools:layout="@layout/fragment_backpressure" />
+    <fragment
+        android:id="@+id/retrofit"
+        android:name="com.tustar.rxjava.ui.retrofit.MovieFragment"
+        android:label="fragment_movie_list"
+        tools:layout="@layout/fragment_retrofit" />
 </navigation>

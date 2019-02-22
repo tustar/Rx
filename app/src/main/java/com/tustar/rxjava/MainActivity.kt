@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.tustar.rxjava.ui.MainFragment
-import com.tustar.rxjava.ui.dummy.DummyContent
+import com.tustar.rxjava.ui.MainContent
 
 class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
 
@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
 
     override fun onSupportNavigateUp() = mNavController.navigateUp()
 
-    override fun onItemClick(item: DummyContent.DummyItem) {
+    override fun onItemClick(item: MainContent.DummyItem) {
         mNavController.navigate(item.action)
         title = item.content
     }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.tustar.rxjava.R
 import com.tustar.rxjava.util.Logger
+import com.tustar.rxjava.util.plus
 import com.tustar.view.tap
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
@@ -32,34 +33,34 @@ class BackPressureFragment : androidx.fragment.app.Fragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_backpressure, container, false)
-        mDisposables.add(view.test_back_pressure_1.tap().subscribe {
+        mDisposables + view.test_back_pressure_1.tap().subscribe {
             mInterrupted = !mInterrupted
             testBackPressure1()
-        })
-        mDisposables.add(view.test_back_pressure_2.tap().subscribe {
+        }
+        mDisposables + view.test_back_pressure_2.tap().subscribe {
             mInterrupted = !mInterrupted
             testBackPressure2()
-        })
-        mDisposables.add(view.test_back_pressure_3.tap().subscribe {
+        }
+        mDisposables + view.test_back_pressure_3.tap().subscribe {
             mInterrupted = !mInterrupted
             testBackPressure3()
-        })
-        mDisposables.add(view.test_back_pressure_4.tap().subscribe {
+        }
+        mDisposables + view.test_back_pressure_4.tap().subscribe {
             mInterrupted = !mInterrupted
             testBackPressure4()
-        })
-        mDisposables.add(view.test_back_pressure_4_request.tap().subscribe {
+        }
+        mDisposables + view.test_back_pressure_4_request.tap().subscribe {
             mInterrupted = !mInterrupted
             onRequest()
-        })
-        mDisposables.add(view.test_back_pressure_5.tap().subscribe {
+        }
+        mDisposables + view.test_back_pressure_5.tap().subscribe {
             mInterrupted = !mInterrupted
             testBackPressure5()
-        })
-        mDisposables.add(view.test_back_pressure_6.tap().subscribe {
+        }
+        mDisposables + view.test_back_pressure_6.tap().subscribe {
             mInterrupted = !mInterrupted
             testBackPressure6()
-        })
+        }
         return view
     }
 

@@ -1,4 +1,4 @@
-package com.tustar.rxjava.ui.dummy
+package com.tustar.rxjava.ui
 
 import androidx.annotation.IdRes
 import com.tustar.rxjava.R
@@ -9,7 +9,7 @@ import java.util.*
  * Android template wizards.
  *
  */
-object DummyContent {
+object MainContent {
 
     /**
      * An array of sample (dummy) items.
@@ -24,6 +24,7 @@ object DummyContent {
     init {
         addItem(DummyItem(1, "Observable", R.id.action_to_observable))
         addItem(DummyItem(2, "BackPressure", R.id.action_to_backpressure))
+        addItem(DummyItem(3, "RxJava2+Retrofit2", R.id.action_to_retrofit))
     }
 
     private fun addItem(item: DummyItem) {

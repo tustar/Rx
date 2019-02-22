@@ -61,20 +61,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="322" />
-                            <option name="y" value="160" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="demo1Fragment">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="290" />
-                            <option name="y" value="-326" />
+                            <option name="x" value="289" />
+                            <option name="y" value="-14" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -85,13 +73,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="38" />
-                            <option name="y" value="25" />
+                            <option name="x" value="-84" />
+                            <option name="y" value="-87" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_demo1">
+                            <entry key="action_mainFragment_to_movieFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -101,7 +89,41 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_to_observable">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_to_retrofit">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="movieFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="288" />
+                            <option name="y" value="286" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="observableFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="290" />
+                            <option name="y" value="-326" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>

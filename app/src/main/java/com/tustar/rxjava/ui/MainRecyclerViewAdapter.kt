@@ -9,7 +9,7 @@ import com.tustar.rxjava.R
 
 
 import com.tustar.rxjava.ui.MainFragment.OnItemClickListener
-import com.tustar.rxjava.ui.dummy.DummyContent.DummyItem
+import com.tustar.rxjava.ui.MainContent.DummyItem
 
 import kotlinx.android.synthetic.main.fragment_main.view.*
 

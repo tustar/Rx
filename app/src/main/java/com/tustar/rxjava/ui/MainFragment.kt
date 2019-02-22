@@ -2,16 +2,13 @@ package com.tustar.rxjava.ui
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tustar.rxjava.R
-import com.tustar.rxjava.ui.dummy.DummyContent
-import com.tustar.rxjava.ui.dummy.DummyContent.DummyItem
+import com.tustar.rxjava.ui.MainContent.DummyItem
 
 /**
  * A fragment representing a list of Items.
@@ -39,11 +36,10 @@ class MainFragment : androidx.fragment.app.Fragment() {
         // Set the adapter
         if (view is androidx.recyclerview.widget.RecyclerView) {
             with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> androidx.recyclerview.widget.LinearLayoutManager(context)
-                    else -> androidx.recyclerview.widget.GridLayoutManager(context, columnCount)
-                }
-                adapter = MainRecyclerViewAdapter(DummyContent.ITEMS, listener)
+                layoutManager = LinearLayoutManager(context)
+                adapter = MainRecyclerViewAdapter(MainContent.ITEMS, listener)
+                addItemDecoration(DividerItemDecoration(context,
+                        LinearLayoutManager(context).orientation))
             }
         }
         return view
