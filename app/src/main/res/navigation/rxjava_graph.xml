@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_to_okHttp"
             app:destination="@id/okHttp" />
+        <action
+            android:id="@+id/action_to_operate"
+            app:destination="@id/operate" />
     </fragment>
     <fragment
         android:id="@+id/observable"
@@ -46,4 +49,9 @@
         android:name="com.tustar.rxjava.ui.okhttp.OkHttpFragment"
         android:label="fragment_ok_http"
         tools:layout="@layout/fragment_ok_http" />
+    <fragment
+        android:id="@+id/operate"
+        android:name="com.tustar.rxjava.ui.OperateFragment"
+        android:label="fragment_operate"
+        tools:layout="@layout/fragment_operate" />
 </navigation>

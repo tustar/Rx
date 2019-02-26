@@ -94,6 +94,16 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_to_okHttp">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_to_operate">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_to_retrofit">
                               <value>
                                 <LayoutPositions />
@@ -116,13 +126,25 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="okHttpFragment">
+                  <entry key="okHttp">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="280" />
-                            <option name="y" value="365" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="operateFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-300" />
+                            <option name="y" value="-441" />
                           </Point>
                         </option>
                       </LayoutPositions>
