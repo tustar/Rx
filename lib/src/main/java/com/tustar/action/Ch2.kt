@@ -6,19 +6,213 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.AsyncSubject
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import io.reactivex.subjects.ReplaySubject
 import java.util.concurrent.TimeUnit
 
 
 fun main(args: Array<String>) {
-    ch2_2_4_maybe_4()
+    ch2_2_5_missing_2()
+}
+
+private fun ch2_2_5_missing_2() {
+    println("ch2_2_5_publish_2")
+    val subject = PublishSubject.create<String>()
+    subject.subscribeOn(Schedulers.io())
+            .subscribe(
+            {
+                println("onNext :: $it")
+            },
+            {
+                println("onError :: ")
+            },
+            {
+                println("onComplete")
+            })
+    subject.onNext("Foo")
+    subject.onNext("Bar")
+    subject.onComplete()
+}
+
+private fun ch2_2_5_missing_1() {
+    println("ch2_2_5_publish_1")
+    val subject = PublishSubject.create<String>()
+    subject.subscribe(
+            {
+                println("onNext :: $it")
+            },
+            {
+                println("onError :: ")
+            },
+            {
+                println("onComplete")
+            })
+    subject.onNext("Foo")
+    subject.onNext("Bar")
+    subject.onComplete()
+}
+
+private fun ch2_2_5_publish_2() {
+    println("ch2_2_5_publish_2")
+    val subject = PublishSubject.create<String>()
+    subject.onNext("PublishSubject1")
+    subject.onNext("PublishSubject2")
+    subject.subscribe(
+            {
+                println("onNext :: $it")
+            },
+            {
+                println("onError :: ")
+            },
+            {
+                println("onComplete")
+            })
+    subject.onNext("PublishSubject3")
+    subject.onNext("PublishSubject4")
+    subject.onComplete()
+}
+
+
+private fun ch2_2_5_publish_1() {
+    println("ch2_2_5_publish_1")
+    val subject = PublishSubject.create<String>()
+    subject.onNext("PublishSubject1")
+    subject.onNext("PublishSubject2")
+    subject.onComplete()
+    subject.subscribe(
+            {
+                println("onNext :: $it")
+            },
+            {
+                println("onError :: ")
+            },
+            {
+                println("onComplete")
+            })
+    subject.onNext("PublishSubject3")
+    subject.onNext("PublishSubject4")
+}
+
+private fun ch2_2_5_replay_2() {
+    println("ch2_2_5_replay_2")
+    val subject = ReplaySubject.createWithSize<String>(1)
+    subject.onNext("ReplaySubject1")
+    subject.onNext("ReplaySubject2")
+    subject.subscribe(
+            {
+                println("onNext :: $it")
+            },
+            {
+                println("onError :: ")
+            },
+            {
+                println("onComplete")
+            })
+    subject.onNext("ReplaySubject3")
+    subject.onNext("ReplaySubject4")
+}
+
+private fun ch2_2_5_replay_1() {
+    println("ch2_2_5_replay_1")
+    val subject = ReplaySubject.create<String>()
+    subject.onNext("ReplaySubject1")
+    subject.onNext("ReplaySubject2")
+    subject.subscribe(
+            {
+                println("onNext :: $it")
+            },
+            {
+                println("onError :: ")
+            },
+            {
+                println("onComplete")
+            })
+    subject.onNext("ReplaySubject3")
+    subject.onNext("ReplaySubject4")
+}
+
+private fun ch2_2_5_behavior_2() {
+    println("ch2_2_5_behavior_2")
+    val subject = BehaviorSubject.createDefault("BehaviorSubjectDefault")
+    subject.onNext("BehaviorSubjectBeforeSubscribe")
+    subject.subscribe(
+            {
+                println("onNext :: $it")
+            },
+            {
+                println("onError :: ")
+            },
+            {
+                println("onComplete")
+            })
+    subject.onNext("BehaviorSubject1")
+    subject.onNext("BehaviorSubject2")
+}
+
+private fun ch2_2_5_behavior_1() {
+    println("ch2_2_5_behavior_1")
+    val subject = BehaviorSubject.createDefault("BehaviorSubjectDefault")
+    subject.subscribe(
+            {
+                println("onNext :: $it")
+            },
+            {
+                println("onError :: ")
+            },
+            {
+                println("onComplete")
+            })
+    subject.onNext("BehaviorSubject1")
+    subject.onNext("BehaviorSubject2")
+}
+
+private fun ch2_2_5_async_2() {
+    println("ch2_2_5_async_2")
+    val subject = AsyncSubject.create<String>();
+    subject.onNext("AsyncSubject1")
+    subject.onNext("AsyncSubject2")
+    subject.subscribe(
+            {
+                println("onNext :: $it")
+            },
+            {
+                println("onError :: ")
+            },
+            {
+                println("onComplete")
+            })
+    subject.onNext("AsyncSubject3")
+    subject.onNext("AsyncSubject4")
+    subject.onComplete()
+}
+
+private fun ch2_2_5_async() {
+    println("ch2_2_5_async")
+    val subject = AsyncSubject.create<String>();
+    subject.onNext("AsyncSubject1")
+    subject.onNext("AsyncSubject2")
+    subject.onComplete()
+    subject.subscribe(
+            {
+                println("onNext :: $it")
+            },
+            {
+                println("onError :: ")
+            },
+            {
+                println("onComplete")
+            })
+    subject.onNext("AsyncSubject3")
+    subject.onNext("AsyncSubject4")
 }
 
 private fun ch2_2_4_maybe() {
     println("ch2_2_4_maybe")
     Maybe.create<String> {
         it.onSuccess("test")
-    }.subscribe{
+    }.subscribe {
         println("onSuccess :: $it")
     }
 }
@@ -28,7 +222,7 @@ private fun ch2_2_4_maybe_2() {
     Maybe.create<String> {
         it.onSuccess("testA")
         it.onSuccess("testB")
-    }.subscribe{
+    }.subscribe {
         println("onSuccess :: $it")
     }
 }
@@ -38,7 +232,7 @@ private fun ch2_2_4_maybe_3() {
     Maybe.create<String> {
         it.onComplete()
         it.onSuccess("test")
-    }.subscribe{
+    }.subscribe {
         println("onSuccess :: $it")
     }
 }
