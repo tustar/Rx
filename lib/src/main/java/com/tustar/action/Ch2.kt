@@ -1,9 +1,9 @@
 package com.tustar.action
 
+import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.BiConsumer
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
@@ -11,7 +11,73 @@ import java.util.concurrent.TimeUnit
 
 
 fun main(args: Array<String>) {
-    ch2_2_4_single()
+    ch2_2_4_maybe_4()
+}
+
+private fun ch2_2_4_maybe() {
+    println("ch2_2_4_maybe")
+    Maybe.create<String> {
+        it.onSuccess("test")
+    }.subscribe{
+        println("onSuccess :: $it")
+    }
+}
+
+private fun ch2_2_4_maybe_2() {
+    println("ch2_2_4_maybe_2")
+    Maybe.create<String> {
+        it.onSuccess("testA")
+        it.onSuccess("testB")
+    }.subscribe{
+        println("onSuccess :: $it")
+    }
+}
+
+private fun ch2_2_4_maybe_3() {
+    println("ch2_2_4_maybe_3")
+    Maybe.create<String> {
+        it.onComplete()
+        it.onSuccess("test")
+    }.subscribe{
+        println("onSuccess :: $it")
+    }
+}
+
+private fun ch2_2_4_maybe_4() {
+    println("ch2_2_4_maybe_4")
+    Maybe.create<String> {
+        it.onComplete()
+        it.onSuccess("test")
+    }.subscribe({
+        println("onSuccess :: $it")
+    }, {
+        println("onError :: Maybe")
+    }, {
+        println("onComplete :: Maybe")
+    })
+}
+
+private fun ch2_2_4_completable_and_then() {
+    println("ch2_2_4_completable_and_then")
+    Completable.create {
+        try {
+            TimeUnit.SECONDS.sleep(1)
+            it.onComplete()
+        } catch (e: InterruptedException) {
+            it.onError(e)
+        }
+    }
+            .andThen(Observable.range(1, 10))
+            .subscribe {
+                println("onNext :: $it")
+            }
+}
+
+private fun ch2_2_4_completable() {
+    println("ch2_2_4_completable")
+    Completable.fromAction {
+        println("Hello World")
+    }.subscribe()
 }
 
 private fun ch2_2_4_single() {
