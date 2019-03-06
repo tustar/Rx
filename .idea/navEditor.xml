@@ -89,6 +89,11 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_to_notification">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_to_observable">
                               <value>
                                 <LayoutPositions />
@@ -110,6 +115,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="notification">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-16" />
+                            <option name="y" value="577" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -138,13 +155,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="operateFragment">
+                  <entry key="operate">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-300" />
-                            <option name="y" value="-441" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>

@@ -28,6 +28,12 @@
         <action
             android:id="@+id/action_to_operate"
             app:destination="@id/operate" />
+        <action
+            android:id="@+id/action_to_notification"
+            app:destination="@id/notification" />
+        <action
+            android:id="@+id/action_mainFragment_to_notification"
+            app:destination="@id/notification" />
     </fragment>
     <fragment
         android:id="@+id/observable"
@@ -54,4 +60,9 @@
         android:name="com.tustar.rxjava.ui.OperateFragment"
         android:label="fragment_operate"
         tools:layout="@layout/fragment_operate" />
+    <activity
+        android:id="@+id/notification"
+        android:name="com.tustar.rxjava.ui.NotificationActivity"
+        android:label="activity_notification"
+        tools:layout="@layout/activity_notification" />
 </navigation>
