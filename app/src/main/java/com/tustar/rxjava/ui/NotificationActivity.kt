@@ -1,6 +1,7 @@
 package com.tustar.rxjava.ui
 
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -14,10 +15,16 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.tustar.rxjava.MainActivity
 import com.tustar.rxjava.R
+import com.tustar.rxjava.util.Logger
 import com.tustar.rxjava.util.plus
+import com.tustar.view.clicks
 import com.tustar.view.tap
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_notification.*
+import java.util.concurrent.TimeUnit
 
 class NotificationActivity : AppCompatActivity() {
 
@@ -38,6 +45,45 @@ class NotificationActivity : AppCompatActivity() {
         mDisposables + high_fullscreen_notification.tap().subscribe {
             showHighFullscreenNotification(it.hashCode())
         }
+
+        val maxCountTime = 4L
+        val text = "高优先级全屏通知(悬浮通知栏通知．不会自动消失), 延迟%d秒发送"
+        mDisposables + high_fullscreen_notification_4.clicks()
+                .throttleFirst(maxCountTime, TimeUnit.SECONDS)
+                .flatMap {
+                    high_fullscreen_notification_4.isEnabled = false
+                    high_fullscreen_notification_4.text = String.format(text, maxCountTime)
+                    Observable.interval(1, TimeUnit.SECONDS, Schedulers.io())
+                            .take(maxCountTime)
+                }
+                .map {
+                    maxCountTime - (it + 1)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    if (it == 0L) {
+                        high_fullscreen_notification_4.isEnabled = true
+                        high_fullscreen_notification_4.text = String.format(text, maxCountTime)
+                        showHighFullscreenNotification(it.hashCode())
+                    } else {
+                        high_fullscreen_notification_4.text = String.format(text, it)
+                    }
+                }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Logger.i()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Logger.i()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Logger.i()
     }
 
     private fun showNormalBarNotification(notificationId: Int) {
@@ -60,7 +106,7 @@ class NotificationActivity : AppCompatActivity() {
 
 
         // Create an explicit intent for an Activity in your app
-        val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, NotificationDetailActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra(MainActivity.INTENT_KEY_FROM_WHICH, "普通")
         }
@@ -76,6 +122,7 @@ class NotificationActivity : AppCompatActivity() {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setColor(ContextCompat.getColor(this, R.color.abc_btn_colored_text_material))
                 .addAction(R.drawable.navigation_empty_icon, "关闭",
                         getClosePendingIntent(context, notificationId))
@@ -107,7 +154,7 @@ class NotificationActivity : AppCompatActivity() {
 
 
         // Create an explicit intent for an Activity in your app
-        val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, NotificationDetailActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra(MainActivity.INTENT_KEY_FROM_WHICH, "高")
         }
@@ -123,6 +170,7 @@ class NotificationActivity : AppCompatActivity() {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setColor(ContextCompat.getColor(this, R.color.abc_btn_colored_text_material))
                 .addAction(R.drawable.navigation_empty_icon, "关闭",
                         getClosePendingIntent(context, notificationId))
@@ -154,26 +202,29 @@ class NotificationActivity : AppCompatActivity() {
 
 
         // Create an explicit intent for an Activity in your app
-        val intent = Intent(context, MainActivity::class.java).apply {
+        val intent = Intent(context, NotificationDetailActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra(MainActivity.INTENT_KEY_FROM_WHICH, "高全屏")
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context, notificationId,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                intent, PendingIntent.FLAG_CANCEL_CURRENT)
 
         val builder = NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("高全屏Title")
                 .setContentText("高全屏Content[$notificationId]")
                 // Set the intent that will fire when the user taps the notification
-//                .setContentIntent(pendingIntent)
+                .setContentIntent(pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setAutoCancel(true)
                 .setFullScreenIntent(pendingIntent, true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setColor(ContextCompat.getColor(this, R.color.abc_btn_colored_text_material))
                 .addAction(R.drawable.navigation_empty_icon, "关闭",
                         getClosePendingIntent(context, notificationId))
+
 
 
         with(NotificationManagerCompat.from(context)) {

@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         mNavController = findNavController(R.id.nav_host_fragment)
-        showIntent(intent)
     }
 
     override fun onSupportNavigateUp() = mNavController.navigateUp()
@@ -30,20 +29,19 @@ class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
         title = item.content
     }
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onResume() {
+        super.onResume()
         Logger.i()
-        super.onNewIntent(intent)
-        showIntent(intent)
     }
 
-    private fun showIntent(intent: Intent?) {
-        intent?.let {
-            val which = intent.getStringExtra(INTENT_KEY_FROM_WHICH)
-            if (which.isNullOrEmpty()) {
-                return
-            }
-            Toast.makeText(this, "Intent来自${which}通知", Toast.LENGTH_LONG).show()
-        }
+    override fun onPause() {
+        super.onPause()
+        Logger.i()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Logger.i()
     }
 
     companion object {
