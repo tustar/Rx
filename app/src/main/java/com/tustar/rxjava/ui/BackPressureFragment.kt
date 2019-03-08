@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.tustar.rxjava.R
 import com.tustar.rxjava.util.Logger
 import com.tustar.rxjava.util.plus
+import com.tustar.rxjava.util.scheduler.SchedulerUtils
 import com.tustar.view.tap
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
@@ -96,8 +97,7 @@ class BackPressureFragment : androidx.fragment.app.Fragment() {
                 e.onNext("testBackPressure2")
             }
         }
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.newThread())
+                .compose(SchedulerUtils.ioToMain())
                 .subscribe {
                     try {
                         Thread.sleep(1000)
