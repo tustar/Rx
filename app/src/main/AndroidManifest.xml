@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.NotificationDetailActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -20,6 +21,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.NotificationActivity"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name=".ui.NotificationReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.tustar.rxjava.ACTION_CLOSE_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

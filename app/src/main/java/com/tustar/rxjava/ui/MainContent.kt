@@ -26,7 +26,8 @@ object MainContent {
         addItem(DummyItem(2, "BackPressure", R.id.action_to_backpressure))
         addItem(DummyItem(3, "RxJava2+Retrofit2", R.id.action_to_retrofit))
         addItem(DummyItem(4, "OkHttp", R.id.action_to_okHttp))
-        addItem(DummyItem(4, "Operate", R.id.action_to_operate))
+        addItem(DummyItem(5, "Operate", R.id.action_to_operate))
+        addItem(DummyItem(6, "Notification", R.id.action_to_notification))
     }
 
     private fun addItem(item: DummyItem) {
