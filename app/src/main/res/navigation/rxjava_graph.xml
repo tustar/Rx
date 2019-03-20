@@ -32,8 +32,8 @@
             android:id="@+id/action_to_notification"
             app:destination="@id/notification" />
         <action
-            android:id="@+id/action_mainFragment_to_notification"
-            app:destination="@id/notification" />
+            android:id="@+id/action_to_displaycutout"
+            app:destination="@id/displayCutout" />
     </fragment>
     <fragment
         android:id="@+id/observable"
@@ -65,4 +65,9 @@
         android:name="com.tustar.rxjava.ui.NotificationActivity"
         android:label="activity_notification"
         tools:layout="@layout/activity_notification" />
+    <activity
+        android:id="@+id/displayCutout"
+        android:name="com.tustar.rxjava.ui.DisplayCutoutActivity"
+        android:label="activity_display_cutout"
+        tools:layout="@layout/activity_display_cutout" />
 </navigation>

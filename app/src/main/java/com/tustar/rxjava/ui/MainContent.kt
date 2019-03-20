@@ -28,6 +28,7 @@ object MainContent {
         addItem(DummyItem(4, "OkHttp", R.id.action_to_okHttp))
         addItem(DummyItem(5, "Operate", R.id.action_to_operate))
         addItem(DummyItem(6, "Notification", R.id.action_to_notification))
+        addItem(DummyItem(7, "DisplayCutout", R.id.action_to_displaycutout))
     }
 
     private fun addItem(item: DummyItem) {
