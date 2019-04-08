@@ -34,6 +34,8 @@
         <action
             android:id="@+id/action_to_displaycutout"
             app:destination="@id/displayCutout" />
+        <action android:id="@+id/action_to_scrolling"
+            app:destination="@id/scrolling"/>
     </fragment>
     <fragment
         android:id="@+id/observable"
@@ -70,4 +72,9 @@
         android:name="com.tustar.rxjava.ui.DisplayCutoutActivity"
         android:label="activity_display_cutout"
         tools:layout="@layout/activity_display_cutout" />
+    <activity
+        android:id="@+id/scrolling"
+        android:name="com.tustar.rxjava.ui.ScrollingActivity"
+        android:label="activity_scrolling"
+        tools:layout="@layout/activity_scrolling" />
 </navigation>

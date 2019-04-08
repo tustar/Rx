@@ -68,13 +68,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="displayCutoutActivity">
+                  <entry key="displayCutout">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="384" />
-                            <option name="y" value="411" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -96,12 +96,12 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_mainFragment_to_notification">
+                            <entry key="action_to_backpressure">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_to_backpressure">
+                            <entry key="action_to_displaycutout">
                               <value>
                                 <LayoutPositions />
                               </value>

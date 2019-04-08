@@ -29,6 +29,7 @@ object MainContent {
         addItem(DummyItem(5, "Operate", R.id.action_to_operate))
         addItem(DummyItem(6, "Notification", R.id.action_to_notification))
         addItem(DummyItem(7, "DisplayCutout", R.id.action_to_displaycutout))
+        addItem(DummyItem(8, "Scrolling", R.id.action_to_scrolling))
     }
 
     private fun addItem(item: DummyItem) {
