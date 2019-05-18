@@ -1,4 +1,4 @@
-package com.tustar.rxjava.ui
+package com.tustar.rxjava.ui.main
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import android.widget.TextView
 import com.tustar.rxjava.R
 
 
-import com.tustar.rxjava.ui.MainFragment.OnItemClickListener
-import com.tustar.rxjava.ui.MainContent.DummyItem
+import com.tustar.rxjava.ui.main.MainFragment.OnItemClickListener
+import com.tustar.rxjava.ui.main.MainContent.DummyItem
 
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_main.view.*
 class MainRecyclerViewAdapter(
         private val mValues: List<DummyItem>,
         private val mListener: OnItemClickListener?)
-    : androidx.recyclerview.widget.RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
+    : RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
@@ -53,7 +53,7 @@ class MainRecyclerViewAdapter(
 
     override fun getItemCount(): Int = mValues.size
 
-    inner class ViewHolder(val mView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(mView) {
+    inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val mIdView: TextView = mView.item_number
         val mContentView: TextView = mView.content
 

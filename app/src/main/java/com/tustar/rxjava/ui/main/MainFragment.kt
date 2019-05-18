@@ -1,4 +1,4 @@
-package com.tustar.rxjava.ui
+package com.tustar.rxjava.ui.main
 
 import android.content.Context
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tustar.rxjava.R
-import com.tustar.rxjava.ui.MainContent.DummyItem
+import com.tustar.rxjava.ui.main.MainContent.DummyItem
 
 /**
  * A fragment representing a list of Items.

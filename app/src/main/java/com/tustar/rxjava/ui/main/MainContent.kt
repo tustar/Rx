@@ -1,4 +1,4 @@
-package com.tustar.rxjava.ui
+package com.tustar.rxjava.ui.main
 
 import androidx.annotation.IdRes
 import com.tustar.rxjava.R
@@ -30,6 +30,7 @@ object MainContent {
         addItem(DummyItem(6, "Notification", R.id.action_to_notification))
         addItem(DummyItem(7, "DisplayCutout", R.id.action_to_displaycutout))
         addItem(DummyItem(8, "Scrolling", R.id.action_to_scrolling))
+        addItem(DummyItem(9, "Browser Transfer", R.id.action_to_transfer))
     }
 
     private fun addItem(item: DummyItem) {
