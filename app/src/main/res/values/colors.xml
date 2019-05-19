@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#FF35A4F3</color>
+    <color name="colorPrimaryDark">#FF35A4F3</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="bg">#fafafa</color>
+    <!--列表选择项颜色-->
+    <color name="list_item_bg_normal">@color/bg</color>
+    <color name="list_item_bg_pressed">#ffededed</color>
 </resources>

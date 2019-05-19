@@ -1,15 +1,21 @@
 package com.tustar.rxjava.util
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
-import android.util.DisplayMetrics
+import android.provider.OpenableColumns
+import androidx.core.content.FileProvider
 import com.tustar.rxjava.R
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
 import java.text.DecimalFormat
+
 
 object FileUtils {
     fun getFileSize(length: Long): String {
@@ -20,50 +26,6 @@ object FileUtils {
             length < 1024f * 1024f * 1024f -> df.format(length.toFloat() / 1024f / 1024f) + "M"
             else -> df.format(length.toFloat() / 1024f / 1024f / 1024f) + "G"
         }
-    }
-
-    @Synchronized
-    fun getIconByPackageName(context: Context, packageName: String): Drawable? {
-        val pm = context.packageManager
-        try {
-            val pi = pm.getPackageInfo(packageName, 0)
-            val otherAppCtx = context.createPackageContext(packageName, Context
-                    .CONTEXT_IGNORE_SECURITY)
-            val displayMetrics = ArrayList<Int>()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                displayMetrics.add(DisplayMetrics.DENSITY_XXXHIGH)
-            }
-            displayMetrics.add(DisplayMetrics.DENSITY_XXHIGH)
-            displayMetrics.add(DisplayMetrics.DENSITY_XHIGH)
-            displayMetrics.add(DisplayMetrics.DENSITY_HIGH)
-            displayMetrics.add(DisplayMetrics.DENSITY_TV)
-            for (displayMetric in displayMetrics) {
-                try {
-                    val drawable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        otherAppCtx.resources.getDrawableForDensity(pi
-                                .applicationInfo.icon, displayMetric, null)
-                    } else {
-                        otherAppCtx.resources.getDrawableForDensity(pi.applicationInfo.icon,
-                                displayMetric)
-                    }
-                    if (drawable != null) {
-                        return drawable
-                    }
-                } catch (e: Resources.NotFoundException) {
-                    e.printStackTrace()
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        var appInfo = try {
-            pm.getApplicationInfo(packageName, 0)
-        } catch (e: PackageManager.NameNotFoundException) {
-            return null
-        }
-
-        return appInfo?.loadIcon(pm)
     }
 
     fun isInstalled(context: Context, packageName: String): Boolean {
@@ -95,6 +57,7 @@ object FileUtils {
         }
     }
 
+    @JvmStatic
     fun getFileType(filePath: String): Int {
         val file = File(filePath)
         if (file.isDirectory) {
@@ -114,21 +77,169 @@ object FileUtils {
         return FileType.TYPE_UNKNOWN
     }
 
-    fun getFileTypeIcon(path: String): Int {
+    @JvmStatic
+    fun getFileTypeDrawable(context: Context, path: String): Drawable? {
+        val fileType = getFileType(path)
+        val resId = when (fileType) {
+            FileType.TYPE_FOLDER -> R.drawable.format_folder
+            FileType.TYPE_IMAGE -> R.drawable.format_image
+            FileType.TYPE_AUDIO -> R.drawable.format_audio
+            FileType.TYPE_VIDEO -> R.drawable.format_media
+            FileType.TYPE_WEB -> R.drawable.format_html
+            FileType.TYPE_TEXT -> R.drawable.format_text
+            FileType.TYPE_EXCEL -> R.drawable.format_excel
+            FileType.TYPE_WORD -> R.drawable.format_word
+            FileType.TYPE_PPT -> R.drawable.format_ppt
+            FileType.TYPE_PDF -> R.drawable.format_pdf
+            FileType.TYPE_PACKAGE -> R.drawable.format_zip
+            else -> R.drawable.format_unkown
+        }
+        return context.getDrawable(resId)
+    }
+
+    @JvmStatic
+    fun getShareType(path: String): String {
         val fileType = getFileType(path)
         return when (fileType) {
-            FileType.TYPE_FOLDER -> R.drawable.file_folder
-            FileType.TYPE_IMAGE -> R.drawable.file_jpeg
-            FileType.TYPE_AUDIO -> R.drawable.file_avi
-            FileType.TYPE_VIDEO -> R.drawable.file_mp4
-            FileType.TYPE_WEB -> R.drawable.file_html
-            FileType.TYPE_TEXT -> R.drawable.file_txt
-            FileType.TYPE_EXCEL -> R.drawable.file_excel
-            FileType.TYPE_WORD -> R.drawable.file_doc
-            FileType.TYPE_PPT -> R.drawable.file_ppt
-            FileType.TYPE_PDF -> R.drawable.file_pdf
-            FileType.TYPE_PACKAGE -> R.drawable.file_zip
-            else -> R.drawable.file_unknow
+            FileType.TYPE_IMAGE -> "image/*"
+            FileType.TYPE_AUDIO -> "audio/*"
+            FileType.TYPE_VIDEO -> "video/*"
+            FileType.TYPE_WEB, FileType.TYPE_TEXT -> "text/*"
+            FileType.TYPE_EXCEL,
+            FileType.TYPE_WORD,
+            FileType.TYPE_PPT,
+            FileType.TYPE_PDF,
+            FileType.TYPE_PACKAGE,
+            FileType.TYPE_APK -> "application/*"
+            else -> "*/*"
+        }
+    }
+
+    @Throws(IOException::class)
+    fun copyFile(inputStream: InputStream, target: String) {
+        inputStream.use {
+            FileOutputStream(target).use { outputStream ->
+                it.copyTo(outputStream, 2048)
+            }
+        }
+    }
+
+    fun getFileName(context: Context, uri: Uri): String? {
+        var result: String? = null
+        if (uri.scheme == "content") {
+            context.contentResolver.query(uri, null, null, null,
+                    null)!!.use { cursor ->
+                if (cursor != null && cursor.moveToFirst()) {
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+                }
+            }
+        }
+        if (result == null) {
+            result = uri.path
+            val cut = result!!.lastIndexOf('/')
+            if (cut != -1) {
+                result = result!!.substring(cut + 1)
+            }
+        }
+
+        return result
+    }
+
+    @JvmStatic
+    fun getFileUri(context: Context, filePath: String): Uri {
+        val file = File(filePath)
+        return FileProvider.getUriForFile(context, context.packageName + "" +
+                ".fileprovider", file)
+    }
+
+    @JvmStatic
+    fun share(context: Context, filePath: String) {
+        val shareIntent = Intent()
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.putExtra(Intent.EXTRA_STREAM, FileUtils.getFileUri(context, filePath))
+        shareIntent.type = FileUtils.getShareType(filePath)
+        context.startActivity(Intent.createChooser(shareIntent, ""))
+    }
+
+    @JvmStatic
+    fun openFile(context: Context, filePath: String) {
+        val fileType = getFileType(filePath)
+        val file = File(filePath)
+
+        if (file.isFile) {
+            val uri = getFileUri(context, filePath)
+            val intent = Intent().apply {
+                action = Intent.ACTION_VIEW
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                putExtra("supportMultipleTheme", true);
+
+                when (fileType) {
+                    FileType.TYPE_IMAGE -> {
+                        addCategory("android.intent.category.DEFAULT")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        setDataAndType(uri, "image/*")
+                    }
+                    FileType.TYPE_AUDIO -> {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        putExtra("oneshot", 0)
+                        putExtra("configchange", 0)
+                        setDataAndType(uri, "audio/*")
+                    }
+                    FileType.TYPE_VIDEO -> {
+                        addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        putExtra("oneshot", 0)
+                        putExtra("configchange", 0)
+                        setDataAndType(uri, "video/*")
+                    }
+                    FileType.TYPE_WEB -> {
+                        setDataAndType(uri, "text/html")
+                    }
+                    FileType.TYPE_TEXT -> {
+                        addCategory("android.intent.category.DEFAULT")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        setDataAndType(uri, "text/plain")
+                    }
+                    FileType.TYPE_EXCEL -> {
+                        addCategory("android.intent.category.DEFAULT")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        setDataAndType(uri, "application/vnd.ms-excel")
+                    }
+                    FileType.TYPE_WORD -> {
+                        addCategory("android.intent.category.DEFAULT")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        setDataAndType(uri, "application/msword")
+                    }
+                    FileType.TYPE_PPT -> {
+                        addCategory("android.intent.category.DEFAULT")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        setDataAndType(uri, "application/vnd.ms-powerpoint")
+                    }
+                    FileType.TYPE_PDF -> {
+                        addCategory("android.intent.category.DEFAULT")
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        setDataAndType(uri, "application/pdf")
+                    }
+                    FileType.TYPE_PACKAGE,
+                    FileType.TYPE_APK -> {
+                        //兼容7.0
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            val contentUri = FileProvider.getUriForFile(context, context.packageName + "" +
+                                    ".fileprovider", file)
+                            setDataAndType(contentUri, "application/vnd.android.package-archive")
+                        } else {
+                            setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive")
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        }
+                    }
+                    else -> {
+                        addCategory("android.intent.category.DEFAULT")
+                        setDataAndType(uri, "*/*")
+                    }
+                }
+            }
+            //
+            context.startActivity(intent)
         }
     }
 }

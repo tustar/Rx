@@ -1,4 +1,4 @@
-package com.tustar.rxjava.transfer
+package com.tustar.rxjava.util
 
 import android.os.Environment
 import java.io.File
@@ -6,9 +6,9 @@ import java.io.File
 object Constants {
 
     const val PORT = 3000
+    const val MAX_WIDTH = 480
     val DIR: File
-        get() = File(Environment.getExternalStorageDirectory(),
-                "${File.separator}${Environment.DIRECTORY_DOWNLOADS}")
+        get() = Environment.getExternalStorageDirectory()
 
     object RxBusEventType {
         const val POPUP_MENU_DIALOG_SHOW_DISMISS = "POPUP MENU DIALOG SHOW " + "DISMISS"

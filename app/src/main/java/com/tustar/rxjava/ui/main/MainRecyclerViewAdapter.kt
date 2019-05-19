@@ -1,26 +1,20 @@
 package com.tustar.rxjava.ui.main
 
-import androidx.recyclerview.widget.RecyclerView
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.tustar.rxjava.R
-
-
-import com.tustar.rxjava.ui.main.MainFragment.OnItemClickListener
+import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.ui.main.MainContent.DummyItem
-
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem] and makes a call to the
- * specified [OnItemClickListener].
- * TODO: Replace the implementation with code for your data type.
- */
+
 class MainRecyclerViewAdapter(
         private val mValues: List<DummyItem>,
-        private val mListener: OnItemClickListener?)
+        private val mListener: OnItemClickListener<DummyItem>?)
     : RecyclerView.Adapter<MainRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener

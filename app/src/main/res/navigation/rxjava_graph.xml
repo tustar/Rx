@@ -36,7 +36,7 @@
             app:destination="@id/displayCutout" />
         <action android:id="@+id/action_to_scrolling"
             app:destination="@id/scrolling"/>
-        <action android:id="@+id/action_to_transfer"
+        <action android:id="@+id/action_to_fm"
             app:destination="@id/transfer"/>
     </fragment>
     <fragment
@@ -81,7 +81,7 @@
         tools:layout="@layout/activity_scrolling" />
     <activity
         android:id="@+id/transfer"
-        android:name="com.tustar.rxjava.ui.transfer.BrowserTransferActivity"
+        android:name="com.tustar.rxjava.ui.files.FilesActivity"
         android:label="activity_browser_transfer"
-        tools:layout="@layout/activity_browser_transfer" />
+        tools:layout="@layout/activity_file_manager" />
 </navigation>

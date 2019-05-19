@@ -1,4 +1,4 @@
-package com.tustar.rxjava.transfer
+package com.tustar.rxjava.files
 
 import android.app.Service
 import android.content.Context
@@ -12,6 +12,7 @@ import com.koushikdutta.async.http.body.UrlEncodedFormBody
 import com.koushikdutta.async.http.server.AsyncHttpServer
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest
 import com.koushikdutta.async.http.server.AsyncHttpServerResponse
+import com.tustar.rxjava.util.Constants
 import com.tustar.rxjava.util.Logger
 import org.json.JSONArray
 import org.json.JSONException
@@ -106,7 +107,7 @@ class WebService : Service() {
             if (fileNames != null) {
                 for (fileName in fileNames) {
                     val file = File(dir, fileName)
-                    if (file.exists() && file.isFile) {
+                    if (file.exists()) {
                         try {
                             val jsonObject = JSONObject()
                             jsonObject.put("name", fileName)
