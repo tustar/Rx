@@ -1,17 +1,16 @@
 package com.tustar.rxjava
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import com.tustar.rxjava.ui.MainContent
-import com.tustar.rxjava.ui.MainFragment
+import com.tustar.rxjava.base.OnItemClickListener
+import com.tustar.rxjava.ui.main.MainContent
+import com.tustar.rxjava.ui.main.MainFragment
 import com.tustar.rxjava.util.Logger
 
 
-class MainActivity : AppCompatActivity(), MainFragment.OnItemClickListener {
+class MainActivity : AppCompatActivity(), OnItemClickListener<MainContent.DummyItem> {
 
     private lateinit var mNavController: NavController
 

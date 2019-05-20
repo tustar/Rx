@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.tustar.rxjava.ui.MainFragment"
+        android:name="com.tustar.rxjava.ui.main.MainFragment"
         android:label="fragment_main_list"
         tools:layout="@layout/fragment_main_list">
         <action
@@ -36,6 +36,8 @@
             app:destination="@id/displayCutout" />
         <action android:id="@+id/action_to_scrolling"
             app:destination="@id/scrolling"/>
+        <action android:id="@+id/action_to_fm"
+            app:destination="@id/transfer"/>
     </fragment>
     <fragment
         android:id="@+id/observable"
@@ -77,4 +79,9 @@
         android:name="com.tustar.rxjava.ui.ScrollingActivity"
         android:label="activity_scrolling"
         tools:layout="@layout/activity_scrolling" />
+    <activity
+        android:id="@+id/transfer"
+        android:name="com.tustar.rxjava.ui.files.FilesActivity"
+        android:label="activity_browser_transfer"
+        tools:layout="@layout/activity_file_manager" />
 </navigation>
