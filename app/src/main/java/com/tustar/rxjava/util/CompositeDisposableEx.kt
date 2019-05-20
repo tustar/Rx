@@ -7,3 +7,7 @@ operator fun CompositeDisposable.plus(disposable: Disposable): CompositeDisposab
     add(disposable)
     return this
 }
+
+operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
+    add(disposable)
+}
