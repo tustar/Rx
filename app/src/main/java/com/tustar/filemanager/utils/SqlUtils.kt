@@ -1,4 +1,4 @@
-package com.tustar.rxjava.util
+package com.tustar.filemanager.utils
 
 /**
  * Created by tustar on 16-8-17.

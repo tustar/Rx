@@ -1,4 +1,4 @@
-package com.tustar.rxjava.files
+package com.tustar.filemanager.utils
 
 object ServerUtils {
 

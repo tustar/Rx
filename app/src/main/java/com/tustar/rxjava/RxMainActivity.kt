@@ -6,18 +6,17 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.ui.main.MainContent
-import com.tustar.rxjava.ui.main.MainFragment
 import com.tustar.rxjava.util.Logger
 
 
-class MainActivity : AppCompatActivity(), OnItemClickListener<MainContent.DummyItem> {
+class RxMainActivity : AppCompatActivity(), OnItemClickListener<MainContent.DummyItem> {
 
     private lateinit var mNavController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Logger.i()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_rx_main)
         mNavController = findNavController(R.id.nav_host_fragment)
     }
 

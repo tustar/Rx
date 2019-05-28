@@ -1,4 +1,4 @@
-package com.tustar.rxjava.util
+package com.tustar.filemanager.utils
 
 import android.content.Context
 import android.net.ConnectivityManager

@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tustar.rxjava.MainActivity
+import com.tustar.rxjava.RxMainActivity
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.ui.main.MainContent.DummyItem
@@ -45,7 +45,7 @@ class MainFragment : androidx.fragment.app.Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (activity is OnItemClickListener<*>) {
-            listener = activity as MainActivity
+            listener = activity as RxMainActivity
         } else {
             throw RuntimeException("$context must implement OnItemClickListener")
         }

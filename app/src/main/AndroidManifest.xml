@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name="com.tustar.filemanager.ui.MainActivity"></activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -32,7 +33,7 @@
         <activity android:name=".ui.DisplayCutoutActivity" />
         <activity android:name=".ui.NotificationDetailActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".RxMainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,12 +60,13 @@
         </receiver>
 
         <activity
-            android:name=".ui.files.FilesActivity"
+            android:name="com.tustar.filemanager.ui.detail.DetailActivity"
             android:label="@string/title_activity_files"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
         <service
-            android:name=".files.WebService"
+            android:name="com.tustar.filemanager.service.WebService"
             android:enabled="true"
             android:exported="true" />
     </application>

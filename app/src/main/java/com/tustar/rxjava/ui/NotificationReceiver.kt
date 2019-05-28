@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
-import com.tustar.rxjava.MainActivity
+import com.tustar.rxjava.RxMainActivity
 
 class NotificationReceiver : BroadcastReceiver() {
 
@@ -15,8 +15,8 @@ class NotificationReceiver : BroadcastReceiver() {
         }
 
         when (intent.action) {
-            MainActivity.ACTION_CLOSE_NOTIFICATION -> {
-                val id = intent.getIntExtra(MainActivity.INTENT_KEY_NOTIFICATION_ID,
+            RxMainActivity.ACTION_CLOSE_NOTIFICATION -> {
+                val id = intent.getIntExtra(RxMainActivity.INTENT_KEY_NOTIFICATION_ID,
                         -1)
                 if (id != -1) {
                     Toast.makeText(context, "取消${id}的通知", Toast.LENGTH_LONG).show()

@@ -1,5 +1,6 @@
-package com.tustar.rxjava.util
+package com.tustar.filemanager.utils
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
@@ -9,7 +10,10 @@ import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
 import androidx.core.content.FileProvider
+import com.tustar.filemanager.model.CachingDocumentFile
 import com.tustar.rxjava.R
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -84,14 +88,14 @@ object FileUtils {
             FileType.TYPE_FOLDER -> R.drawable.format_folder
             FileType.TYPE_IMAGE -> R.drawable.format_image
             FileType.TYPE_AUDIO -> R.drawable.format_audio
-            FileType.TYPE_VIDEO -> R.drawable.format_media
+            FileType.TYPE_VIDEO -> R.drawable.format_video
             FileType.TYPE_WEB -> R.drawable.format_html
             FileType.TYPE_TEXT -> R.drawable.format_text
             FileType.TYPE_EXCEL -> R.drawable.format_excel
-            FileType.TYPE_WORD -> R.drawable.format_word
+            FileType.TYPE_WORD -> R.drawable.format_doc
             FileType.TYPE_PPT -> R.drawable.format_ppt
             FileType.TYPE_PDF -> R.drawable.format_pdf
-            FileType.TYPE_PACKAGE -> R.drawable.format_zip
+            FileType.TYPE_PACKAGE -> R.drawable.format_archives
             else -> R.drawable.format_unkown
         }
         return context.getDrawable(resId)
@@ -156,8 +160,8 @@ object FileUtils {
     fun share(context: Context, filePath: String) {
         val shareIntent = Intent()
         shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_STREAM, FileUtils.getFileUri(context, filePath))
-        shareIntent.type = FileUtils.getShareType(filePath)
+        shareIntent.putExtra(Intent.EXTRA_STREAM, getFileUri(context, filePath))
+        shareIntent.type = getShareType(filePath)
         context.startActivity(Intent.createChooser(shareIntent, ""))
     }
 
@@ -240,6 +244,18 @@ object FileUtils {
             }
             //
             context.startActivity(intent)
+        }
+    }
+
+    fun openDocument(context: Context, document: CachingDocumentFile) {
+        try {
+            val openIntent = Intent(Intent.ACTION_VIEW).apply {
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                data = document.uri
+            }
+            context.startActivity(openIntent)
+        } catch (ex: ActivityNotFoundException) {
+            context.longToast(context.resources.getString(R.string.error_no_activity, document.name))
         }
     }
 }

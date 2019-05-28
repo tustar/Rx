@@ -1,4 +1,4 @@
-package com.tustar.rxjava.util
+package com.tustar.filemanager.utils
 
 import android.os.Environment
 import java.io.File
@@ -15,4 +15,6 @@ object Constants {
         const val WIFI_CONNECT_CHANGE_EVENT = "WIFI CONNECT CHANGE EVENT"
         const val LOAD_FILE_LIST = "LOAD BOOK LIST"
     }
+
+    const val SHARED_PREFERENCES = "filemanager_shared_preferences"
 }

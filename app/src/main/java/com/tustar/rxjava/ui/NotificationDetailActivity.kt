@@ -3,7 +3,7 @@ package com.tustar.rxjava.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.tustar.rxjava.MainActivity
+import com.tustar.rxjava.RxMainActivity
 import com.tustar.rxjava.R
 import com.tustar.rxjava.util.Logger
 import kotlinx.android.synthetic.main.activity_notification_detail.*
@@ -24,7 +24,7 @@ class NotificationDetailActivity : Activity() {
 
     private fun showIntent(intent: Intent?) {
         intent?.let {
-            val which = intent.getStringExtra(MainActivity.INTENT_KEY_FROM_WHICH)
+            val which = intent.getStringExtra(RxMainActivity.INTENT_KEY_FROM_WHICH)
             if (which.isNullOrEmpty()) {
                 return
             }

@@ -1,4 +1,4 @@
-package com.tustar.rxjava.util
+package com.tustar.filemanager.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
@@ -15,6 +15,7 @@ import android.media.ThumbnailUtils
 import android.os.Build
 import android.provider.MediaStore
 import android.util.DisplayMetrics
+import com.tustar.rxjava.util.Logger
 import java.io.File
 import java.io.IOException
 
@@ -138,7 +139,7 @@ object ThumbUtils {
             BitmapFactory.decodeFile(filePath, opt)
             opt.inJustDecodeBounds = false
 
-            opt.inSampleSize = ThumbUtils.computeSampleSize(opt, -1,
+            opt.inSampleSize = computeSampleSize(opt, -1,
                     Constants.MAX_WIDTH * Constants.MAX_WIDTH)
             val b = BitmapFactory.decodeFile(filePath, opt)
 
@@ -152,9 +153,9 @@ object ThumbUtils {
         var b = b
         var currentIcon: Drawable? = null
         if (b != null) {
-            val f = ThumbUtils.computeReduceSize(b.width, b.height, Constants.MAX_WIDTH)
+            val f = computeReduceSize(b.width, b.height, Constants.MAX_WIDTH)
             if (f > 0) {
-                b = ThumbUtils.zoomInOut(b, f, f)
+                b = zoomInOut(b, f, f)
             }
             b = getPortBitmap(filePath, b)
             currentIcon = BitmapDrawable(context.resources, b)
@@ -201,7 +202,7 @@ object ThumbUtils {
             BitmapFactory.decodeFile(filePath, opt)
             opt.inJustDecodeBounds = false
 
-            opt.inSampleSize = ThumbUtils.computeSampleSize(opt, -1,
+            opt.inSampleSize = computeSampleSize(opt, -1,
                     Constants.MAX_WIDTH * Constants.MAX_WIDTH)
             val b = BitmapFactory.decodeFile(filePath, opt)
 
@@ -219,7 +220,7 @@ object ThumbUtils {
             val widthPixels = context.resources.displayMetrics.widthPixels
             val f = widthPixels.toFloat() / b.width.toFloat()
             if (f > 0) {
-                b = ThumbUtils.zoomInOut(b, f, f)
+                b = zoomInOut(b, f, f)
             }
             currentIcon = BitmapDrawable(context.resources, b)
         }
@@ -239,14 +240,14 @@ object ThumbUtils {
                 opt.inJustDecodeBounds = true
                 BitmapFactory.decodeByteArray(albumArt, 0, albumArt.size, opt)
                 opt.inJustDecodeBounds = false
-                opt.inSampleSize = ThumbUtils.computeSampleSize(opt, -1,
+                opt.inSampleSize = computeSampleSize(opt, -1,
                         Constants.MAX_WIDTH * Constants.MAX_WIDTH)
 
                 var b: Bitmap? = BitmapFactory.decodeByteArray(albumArt, 0, albumArt.size, opt)
                 if (b != null) {
-                    val f = ThumbUtils.computeReduceSize(b.width, b.height, Constants.MAX_WIDTH)
+                    val f = computeReduceSize(b.width, b.height, Constants.MAX_WIDTH)
                     if (f > 0) {
-                        b = ThumbUtils.zoomInOut(b, f, f)
+                        b = zoomInOut(b, f, f)
                     }
                     currentIcon = BitmapDrawable(context.resources, b)
                 }
@@ -277,9 +278,9 @@ object ThumbUtils {
                         MediaStore.Video.Thumbnails.MINI_KIND, opt)
 
                 if (b != null) {
-                    val f = ThumbUtils.computeReduceSize(b.width, b.height, Constants.MAX_WIDTH)
+                    val f = computeReduceSize(b.width, b.height, Constants.MAX_WIDTH)
                     if (f > 0) {
-                        b = ThumbUtils.zoomInOut(b, f, f)
+                        b = zoomInOut(b, f, f)
                     }
                     currentIcon = BitmapDrawable(context.resources, b)
                 }
@@ -408,9 +409,9 @@ object ThumbUtils {
     @JvmStatic
     fun getPortBitmap(filePath: String, bitmap: Bitmap): Bitmap {
         var bitmap = bitmap
-        val orientation = ThumbUtils.getExifOrientation(filePath)
+        val orientation = getExifOrientation(filePath)
         if (orientation != 0) {
-            bitmap = ThumbUtils.rotateIfNeed(bitmap, orientation)
+            bitmap = rotateIfNeed(bitmap, orientation)
         }
         return bitmap
     }

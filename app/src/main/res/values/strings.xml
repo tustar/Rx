@@ -100,4 +100,13 @@
     <string name="files_contains_file">共1个文件</string>
     <string name="files_contains_files">共%1$d个文件</string>
     <string name="files_dir_is_empty">没有文件</string>
+
+    <string name="category_image">图片</string>
+    <string name="category_audio">音频</string>
+    <string name="category_video">视频</string>
+    <string name="category_doc">文档</string>
+    <string name="category_app">安装包</string>
+    <string name="category_archives">压缩包</string>
+
+    <string name="error_no_activity">No activity found to open "%1$s".</string>
 </resources>

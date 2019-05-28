@@ -1,4 +1,4 @@
-package com.tustar.rxjava.files
+package com.tustar.filemanager.service
 
 import android.app.Service
 import android.content.Context
@@ -12,7 +12,8 @@ import com.koushikdutta.async.http.body.UrlEncodedFormBody
 import com.koushikdutta.async.http.server.AsyncHttpServer
 import com.koushikdutta.async.http.server.AsyncHttpServerRequest
 import com.koushikdutta.async.http.server.AsyncHttpServerResponse
-import com.tustar.rxjava.util.Constants
+import com.tustar.filemanager.utils.ServerUtils
+import com.tustar.filemanager.utils.Constants
 import com.tustar.rxjava.util.Logger
 import org.json.JSONArray
 import org.json.JSONException

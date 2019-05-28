@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.tustar.rxjava.MainActivity
+import com.tustar.rxjava.RxMainActivity
 import com.tustar.rxjava.R
 import com.tustar.rxjava.util.Logger
 import com.tustar.rxjava.util.plus
@@ -108,7 +108,7 @@ class NotificationActivity : AppCompatActivity() {
         // Create an explicit intent for an Activity in your app
         val intent = Intent(context, NotificationDetailActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra(MainActivity.INTENT_KEY_FROM_WHICH, "普通")
+            putExtra(RxMainActivity.INTENT_KEY_FROM_WHICH, "普通")
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context, notificationId,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -156,7 +156,7 @@ class NotificationActivity : AppCompatActivity() {
         // Create an explicit intent for an Activity in your app
         val intent = Intent(context, NotificationDetailActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra(MainActivity.INTENT_KEY_FROM_WHICH, "高")
+            putExtra(RxMainActivity.INTENT_KEY_FROM_WHICH, "高")
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context, notificationId,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -204,7 +204,7 @@ class NotificationActivity : AppCompatActivity() {
         // Create an explicit intent for an Activity in your app
         val intent = Intent(context, NotificationDetailActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra(MainActivity.INTENT_KEY_FROM_WHICH, "高全屏")
+            putExtra(RxMainActivity.INTENT_KEY_FROM_WHICH, "高全屏")
         }
         val pendingIntent: PendingIntent = PendingIntent.getActivity(context, notificationId,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT)
@@ -235,8 +235,8 @@ class NotificationActivity : AppCompatActivity() {
 
     private fun getClosePendingIntent(context: Context, notificationId: Int): PendingIntent {
         val intent = Intent(context, NotificationReceiver::class.java).apply {
-            action = MainActivity.ACTION_CLOSE_NOTIFICATION
-            putExtra(MainActivity.INTENT_KEY_NOTIFICATION_ID, notificationId)
+            action = RxMainActivity.ACTION_CLOSE_NOTIFICATION
+            putExtra(RxMainActivity.INTENT_KEY_NOTIFICATION_ID, notificationId)
         }
         return PendingIntent.getBroadcast(context, notificationId,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT)

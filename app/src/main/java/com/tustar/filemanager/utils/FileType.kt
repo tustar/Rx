@@ -1,4 +1,4 @@
-package com.tustar.rxjava.util
+package com.tustar.filemanager.utils
 
 object FileType {
     val FileTypes = arrayOf(
