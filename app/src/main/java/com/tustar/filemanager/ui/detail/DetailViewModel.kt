@@ -26,7 +26,9 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
     val openDocument = _openDocument
 
     fun loadDirectory(directoryUri: Uri) {
+        Logger.d("directoryUri:$directoryUri")
         val documentsTree = DocumentFile.fromTreeUri(getApplication(), directoryUri) ?: return
+        Logger.d("documentsTree:${documentsTree.uri}")
         val childDocuments = documentsTree.listFiles().toCachingList()
 
         // It's much nicer when the documents are sorted by something, so we'll sort the documents

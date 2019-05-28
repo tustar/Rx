@@ -40,7 +40,7 @@ class DetailAdapter(private val listener: OnItemClickListener<CachingDocumentFil
         }
     }
 
-    override fun getItemCount(): Int = directoryEntries?.size
+    override fun getItemCount(): Int = directoryEntries.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icon: ImageView = itemView.file_icon
@@ -54,12 +54,10 @@ class DetailAdapter(private val listener: OnItemClickListener<CachingDocumentFil
             if (item.isDirectory) {
                 icon.setImageResource(R.drawable.format_folder)
             } else {
-                try {
-                    Glide.with(context).load(item.uri).into(icon)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                item.name?.let {
+                    icon.setImageDrawable(FileUtils.getFileTypeDrawableByName(itemView.context, it))
                 }
-
+                Glide.with(context).load(item.uri).into(icon)
             }
 
             name.text = item.name

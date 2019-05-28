@@ -10,10 +10,10 @@ import android.net.Uri
 import android.os.Build
 import android.provider.OpenableColumns
 import androidx.core.content.FileProvider
+import androidx.documentfile.provider.DocumentFile
 import com.tustar.filemanager.model.CachingDocumentFile
 import com.tustar.rxjava.R
 import org.jetbrains.anko.longToast
-import org.jetbrains.anko.toast
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -61,15 +61,7 @@ object FileUtils {
         }
     }
 
-    @JvmStatic
-    fun getFileType(filePath: String): Int {
-        val file = File(filePath)
-        if (file.isDirectory) {
-            return FileType.TYPE_FOLDER
-        }
-
-        val fileName = file.name
-
+    private fun getFileTypeByName(fileName: String): Int {
         FileType.FileTypes.forEachIndexed { index, types ->
             types.forEach { type ->
                 if (fileName.endsWith(type)) {
@@ -82,28 +74,63 @@ object FileUtils {
     }
 
     @JvmStatic
+    fun getFileType(filePath: String): Int {
+        val file = File(filePath)
+        if (file.isDirectory) {
+            return FileType.TYPE_FOLDER
+        }
+
+        return getFileTypeByName(file.name)
+    }
+
+    @JvmStatic
+    fun getFileType(file: DocumentFile): Int {
+        if (file.isDirectory) {
+            return FileType.TYPE_FOLDER
+        }
+
+        file.name?.let { return getFileTypeByName(it) }
+
+        return FileType.TYPE_UNKNOWN
+    }
+    private fun fileType2ResId(fileType: Int) =
+            when (fileType) {
+                FileType.TYPE_FOLDER -> R.drawable.format_folder
+                FileType.TYPE_IMAGE -> R.drawable.format_image
+                FileType.TYPE_AUDIO -> R.drawable.format_audio
+                FileType.TYPE_VIDEO -> R.drawable.format_video
+                FileType.TYPE_WEB -> R.drawable.format_html
+                FileType.TYPE_TEXT -> R.drawable.format_text
+                FileType.TYPE_EXCEL -> R.drawable.format_excel
+                FileType.TYPE_WORD -> R.drawable.format_doc
+                FileType.TYPE_PPT -> R.drawable.format_ppt
+                FileType.TYPE_PDF -> R.drawable.format_pdf
+                FileType.TYPE_PACKAGE -> R.drawable.format_archives
+                else -> R.drawable.format_unkown
+            }
+
+    @JvmStatic
     fun getFileTypeDrawable(context: Context, path: String): Drawable? {
         val fileType = getFileType(path)
-        val resId = when (fileType) {
-            FileType.TYPE_FOLDER -> R.drawable.format_folder
-            FileType.TYPE_IMAGE -> R.drawable.format_image
-            FileType.TYPE_AUDIO -> R.drawable.format_audio
-            FileType.TYPE_VIDEO -> R.drawable.format_video
-            FileType.TYPE_WEB -> R.drawable.format_html
-            FileType.TYPE_TEXT -> R.drawable.format_text
-            FileType.TYPE_EXCEL -> R.drawable.format_excel
-            FileType.TYPE_WORD -> R.drawable.format_doc
-            FileType.TYPE_PPT -> R.drawable.format_ppt
-            FileType.TYPE_PDF -> R.drawable.format_pdf
-            FileType.TYPE_PACKAGE -> R.drawable.format_archives
-            else -> R.drawable.format_unkown
-        }
+        val resId = fileType2ResId(fileType)
         return context.getDrawable(resId)
     }
 
     @JvmStatic
-    fun getShareType(path: String): String {
-        val fileType = getFileType(path)
+    fun getFileTypeDrawable(context: Context, file:DocumentFile): Drawable? {
+        val fileType = getFileType(file)
+        val resId = fileType2ResId(fileType)
+        return context.getDrawable(resId)
+    }
+
+    @JvmStatic
+    fun getFileTypeDrawableByName(context: Context, fileName:String): Drawable? {
+        val fileType = getFileTypeByName(fileName)
+        val resId = fileType2ResId(fileType)
+        return context.getDrawable(resId)
+    }
+
+    private fun fileType2MimeType(fileType: Int): String {
         return when (fileType) {
             FileType.TYPE_IMAGE -> "image/*"
             FileType.TYPE_AUDIO -> "audio/*"
@@ -117,6 +144,12 @@ object FileUtils {
             FileType.TYPE_APK -> "application/*"
             else -> "*/*"
         }
+    }
+
+    @JvmStatic
+    fun getShareType(path: String): String {
+        val fileType = getFileType(path)
+        return fileType2MimeType(fileType)
     }
 
     @Throws(IOException::class)
@@ -247,7 +280,8 @@ object FileUtils {
         }
     }
 
-    fun openDocument(context: Context, document: CachingDocumentFile) {
+    fun openDocument(context: Context?, document: CachingDocumentFile) {
+        context ?: return
         try {
             val openIntent = Intent(Intent.ACTION_VIEW).apply {
                 flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
