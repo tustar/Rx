@@ -5,7 +5,7 @@
     android:numColumns="3"
     tools:itemCount="6"
     android:id="@+id/main_category_gridview"
-    tools:context="com.tustar.filemanager.ui.CategoryFragment"
+    tools:context="com.tustar.filemanager.ui.category.CategoryFragment"
     tools:listitem="@layout/item_category">
 
 </GridView>

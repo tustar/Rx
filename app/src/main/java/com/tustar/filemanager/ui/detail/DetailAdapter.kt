@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.tustar.filemanager.model.CachingDocumentFile
+import com.tustar.filemanager.model.DetailFileItem
 import com.tustar.filemanager.utils.DateUtils
 import com.tustar.filemanager.utils.FileUtils
 import com.tustar.rxjava.R
@@ -15,10 +15,10 @@ import com.tustar.rxjava.base.OnItemClickListener
 import kotlinx.android.synthetic.main.item_file_list.view.*
 import java.lang.Exception
 
-class DetailAdapter(private val listener: OnItemClickListener<CachingDocumentFile>)
+class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val directoryEntries = mutableListOf<CachingDocumentFile>()
+    private val directoryEntries = mutableListOf<DetailFileItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -32,7 +32,7 @@ class DetailAdapter(private val listener: OnItemClickListener<CachingDocumentFil
         }
     }
 
-    fun setEntries(newList: List<CachingDocumentFile>) {
+    fun setEntries(newList: List<DetailFileItem>) {
         synchronized(directoryEntries) {
             directoryEntries.clear()
             directoryEntries.addAll(newList)
@@ -49,7 +49,7 @@ class DetailAdapter(private val listener: OnItemClickListener<CachingDocumentFil
         private val lastModified: TextView = itemView.file_lastModified
         private val arrow: ImageView = itemView.file_arrow
 
-        fun bind(item: CachingDocumentFile) {
+        fun bind(item: DetailFileItem) {
             val context = itemView.context
             if (item.isDirectory) {
                 icon.setImageResource(R.drawable.format_folder)

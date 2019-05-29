@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/main_category_fragment"
-        class="com.tustar.filemanager.ui.CategoryFragment"
+        class="com.tustar.filemanager.ui.category.CategoryFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,14 +17,14 @@
         tools:layout="@layout/fragment_category" />
 
     <fragment
-        android:id="@+id/main_storage_fragment"
-        class="com.tustar.filemanager.ui.StorageFragment"
+        android:id="@+id/main_volume_fragment"
+        class="com.tustar.filemanager.ui.volume.VolumeFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/main_category_fragment"
-        tools:layout="@layout/fragment_storage" />
+        tools:layout="@layout/fragment_volume" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

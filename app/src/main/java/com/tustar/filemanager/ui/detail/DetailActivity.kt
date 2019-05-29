@@ -11,18 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.transaction
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.tustar.filemanager.model.CachingDocumentFile
-import com.tustar.filemanager.utils.FileUtils
 import com.tustar.filemanager.utils.StorageUtils
 import com.tustar.rxjava.R
-import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.util.Logger
-import kotlinx.android.synthetic.main.activity_detail.*
 import org.jetbrains.anko.toast
 
 class DetailActivity : AppCompatActivity() {

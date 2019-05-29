@@ -1,4 +1,4 @@
-package com.tustar.filemanager.ui
+package com.tustar.filemanager.ui.category
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +11,14 @@ import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import org.jetbrains.anko.find
 
-class CategoryAdapter(var items: List<CategoryItem>) : BaseAdapter() {
+class CategoryAdapter : BaseAdapter() {
 
     var onItemClickListener: OnItemClickListener<CategoryItem>? = null
+    var items: List<CategoryItem> = mutableListOf()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun getCount() = items.size
 

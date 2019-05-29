@@ -11,7 +11,7 @@ import android.os.Build
 import android.provider.OpenableColumns
 import androidx.core.content.FileProvider
 import androidx.documentfile.provider.DocumentFile
-import com.tustar.filemanager.model.CachingDocumentFile
+import com.tustar.filemanager.model.DetailFileItem
 import com.tustar.rxjava.R
 import org.jetbrains.anko.longToast
 import java.io.File
@@ -280,7 +280,7 @@ object FileUtils {
         }
     }
 
-    fun openDocument(context: Context?, document: CachingDocumentFile) {
+    fun openDocument(context: Context?, document: DetailFileItem) {
         context ?: return
         try {
             val openIntent = Intent(Intent.ACTION_VIEW).apply {

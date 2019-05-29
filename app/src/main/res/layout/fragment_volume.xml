@@ -1,11 +1,11 @@
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_storage_recyclerView"
+    android:id="@+id/main_volume_recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:overScrollMode="never"
     tools:itemCount="2"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:context="com.tustar.filemanager.ui.StorageFragment"
+    tools:context="com.tustar.filemanager.ui.volume.VolumeFragment"
     tools:listitem="@layout/item_storage" />
