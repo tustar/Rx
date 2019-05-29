@@ -4,8 +4,8 @@ import android.net.Uri
 import com.tustar.filemanager.annotation.*
 
 object DetailFactory {
-    fun create(@StorageType storageType: Int, directoryUri: Uri? = null): DetailFragment {
-        return when (storageType) {
+    fun create(@DetailType detailType: Int, directoryUri: Uri? = null): DetailFragment {
+        return when (detailType) {
             TYPE_IMAGE -> ImageFragment.newInstance()
             TYPE_AUDIO -> AudioFragment.newInstance()
             TYPE_VIDEO -> VideoFragment.newInstance()
@@ -15,7 +15,7 @@ object DetailFactory {
             TYPE_STORAGE_PHONE, TYPE_STORAGE_SDCARD, TYPE_STORAGE_USB -> {
                 val uri = directoryUri
                         ?: throw IllegalArgumentException("Must pass URI of directory to open")
-                VolumnFragment.newInstance(uri)
+                VolumeFragment.newInstance(uri)
             }
             else -> DetailFragment.newInstance()
         }

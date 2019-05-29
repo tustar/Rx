@@ -11,7 +11,7 @@ import com.tustar.rxjava.base.OnItemClickListener
 
 private const val ARG_DIRECTORY_URI = "arg_directory_uri"
 
-class VolumnFragment : DetailFragment(), OnItemClickListener<DetailFileItem> {
+class VolumeFragment : DetailFragment(), OnItemClickListener<DetailFileItem> {
 
     private lateinit var directoryUri: Uri
 
@@ -20,7 +20,6 @@ class VolumnFragment : DetailFragment(), OnItemClickListener<DetailFileItem> {
         directoryUri = arguments?.getString(ARG_DIRECTORY_URI)?.toUri()
                 ?: throw IllegalArgumentException("Must pass URI of directory to open")
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,7 +51,7 @@ class VolumnFragment : DetailFragment(), OnItemClickListener<DetailFileItem> {
 
     companion object {
         @JvmStatic
-        fun newInstance(directoryUri: Uri) = DetailFragment().apply {
+        fun newInstance(directoryUri: Uri) = VolumeFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_DIRECTORY_URI, directoryUri.toString())
             }

@@ -85,22 +85,6 @@ object ThumbUtils {
     }
 
     @JvmStatic
-    fun getDrawableForFile(context: Context, filePath: String): Drawable? {
-        return when (FileUtils.getFileType(filePath)) {
-            FileType.TYPE_IMAGE -> {
-                getDrawableForImage(context, filePath)
-            }
-            FileType.TYPE_VIDEO -> {
-                getDrawableForVideo(context, filePath, 96, 96)
-            }
-            FileType.TYPE_APK -> {
-                getDrawableForApk(context, filePath)
-            }
-            else -> FileUtils.getFileTypeDrawable(context, filePath)
-        }
-    }
-
-    @JvmStatic
     fun getDrawableForImage(context: Context?, filePath: String?): Drawable? {
         if (context == null || filePath == null) {
             return null

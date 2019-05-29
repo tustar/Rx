@@ -12,7 +12,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.transaction
 import com.tbruyelle.rxpermissions2.RxPermissions
-import com.tustar.filemanager.annotation.StorageType
+import com.tustar.filemanager.annotation.DetailType
 import com.tustar.filemanager.annotation.TYPE_STORAGE_PHONE
 import com.tustar.filemanager.annotation.TYPE_STORAGE_SDCARD
 import com.tustar.filemanager.annotation.TYPE_STORAGE_USB
@@ -25,8 +25,8 @@ import org.jetbrains.anko.toast
 class DetailActivity : AppCompatActivity() {
 
     private var uuid: String? = null
-    @StorageType
-    private var storageType: Int = TYPE_STORAGE_PHONE
+    @DetailType
+    private var detailType: Int = TYPE_STORAGE_PHONE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class DetailActivity : AppCompatActivity() {
         //
         checkPermissionRequest(this)
         //
-        storageType = intent.getIntExtra(DETAIL_STORAGE_TYPE, TYPE_STORAGE_PHONE)
+        detailType = intent.getIntExtra(DETAIL_STORAGE_TYPE, TYPE_STORAGE_PHONE)
 
         loadData()
     }
@@ -85,7 +85,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        when (storageType) {
+        when (detailType) {
             TYPE_STORAGE_PHONE, TYPE_STORAGE_SDCARD, TYPE_STORAGE_USB -> {
                 val storageVolume = intent.getParcelableExtra(DETAIL_STORAGE_VOLUME)
                         as StorageVolume
@@ -116,7 +116,7 @@ class DetailActivity : AppCompatActivity() {
     fun showDirectoryContents(directoryUri: Uri) {
         supportFragmentManager.transaction {
             val directoryTag = directoryUri.toString()
-            val directoryFragment = DetailFactory.create(storageType, directoryUri)
+            val directoryFragment = DetailFactory.create(detailType, directoryUri)
             replace(R.id.detail_fragment_container, directoryFragment, directoryTag)
             addToBackStack(directoryTag)
         }
@@ -135,11 +135,11 @@ class DetailActivity : AppCompatActivity() {
         const val DETAIL_STORAGE_TYPE = "detail_storage_type"
         const val REQUEST_CODE_OPEN_DIRECTORY = 0xf11e
 
-        fun openDetail(context: Context?, volume: StorageVolume, @StorageType type: Int) {
+        fun openDetail(context: Context?, volume: StorageVolume, @DetailType detailType: Int) {
             context?.let {
                 val intent = Intent(context, DetailActivity::class.java).apply {
                     putExtra(DETAIL_STORAGE_VOLUME, volume)
-                    putExtra(DETAIL_STORAGE_TYPE, type)
+                    putExtra(DETAIL_STORAGE_TYPE, detailType)
                 }
                 it.startActivity(intent)
             }
