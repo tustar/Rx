@@ -38,7 +38,7 @@ class CategoryFragment : Fragment(), OnItemClickListener<CategoryItem> {
 
         initViews()
         initObservers()
-        viewModel.loadCategories()
+        loadData()
     }
 
     private fun initViews() {
@@ -53,16 +53,40 @@ class CategoryFragment : Fragment(), OnItemClickListener<CategoryItem> {
         viewModel.categories.observe(this, Observer {
             categoryAdapter.items = it
         })
+        viewModel.imageCount.observe(this, Observer {
+            categoryAdapter.items[INDEX_IMAGE].count = it
+            categoryAdapter.notifyDataSetChanged()
+        })
+        viewModel.audioCount.observe(this, Observer {
+            categoryAdapter.items[INDEX_AUDIO].count = it
+            categoryAdapter.notifyDataSetChanged()
+        })
+        viewModel.videoCount.observe(this, Observer {
+            categoryAdapter.items[INDEX_VIDEO].count = it
+            categoryAdapter.notifyDataSetChanged()
+        })
+    }
+
+    private fun loadData() {
+        viewModel.loadCategories()
+        viewModel.loadImageBucketCount()
+        viewModel.loadAudioCount()
+        viewModel.loadVideoCount()
     }
 
     override fun onItemClick(item: CategoryItem) {
-        val intent = Intent(context!!, DetailActivity::class.java).apply {
 
-        }
-        startActivity(intent)
     }
 
     companion object {
+
+        const val INDEX_IMAGE = 0
+        const val INDEX_AUDIO = 1
+        const val INDEX_VIDEO = 2
+        const val INDEX_DOC = 3
+        const val INDEX_APP = 4
+        const val INDEX_ARCHIVES = 5
+
         @JvmStatic
         fun newInstance() = CategoryFragment()
     }

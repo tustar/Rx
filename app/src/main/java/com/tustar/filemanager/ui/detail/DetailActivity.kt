@@ -12,14 +12,21 @@ import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.transaction
 import com.tbruyelle.rxpermissions2.RxPermissions
+import com.tustar.filemanager.annotation.StorageType
+import com.tustar.filemanager.annotation.TYPE_STORAGE_PHONE
+import com.tustar.filemanager.annotation.TYPE_STORAGE_SDCARD
+import com.tustar.filemanager.annotation.TYPE_STORAGE_USB
 import com.tustar.filemanager.utils.StorageUtils
 import com.tustar.rxjava.R
 import com.tustar.rxjava.util.Logger
 import org.jetbrains.anko.toast
 
+
 class DetailActivity : AppCompatActivity() {
 
     private var uuid: String? = null
+    @StorageType
+    private var storageType: Int = TYPE_STORAGE_PHONE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +35,9 @@ class DetailActivity : AppCompatActivity() {
         //
         checkPermissionRequest(this)
         //
-        val storageVolume = intent.getParcelableExtra(DETAIL_STORAGE_VOLUME) as StorageVolume
-        loadStorageVolume(storageVolume)
+        storageType = intent.getIntExtra(DETAIL_STORAGE_TYPE, TYPE_STORAGE_PHONE)
+
+        loadData()
     }
 
     private fun checkPermissionRequest(activity: FragmentActivity) {
@@ -76,6 +84,17 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadData() {
+        when (storageType) {
+            TYPE_STORAGE_PHONE, TYPE_STORAGE_SDCARD, TYPE_STORAGE_USB -> {
+                val storageVolume = intent.getParcelableExtra(DETAIL_STORAGE_VOLUME)
+                        as StorageVolume
+                loadStorageVolume(storageVolume)
+            }
+        }
+    }
+
+
     private fun loadStorageVolume(storageVolume: StorageVolume?) {
         val volume = storageVolume ?: return
         val uuid = (if (volume.isPrimary) {
@@ -97,7 +116,7 @@ class DetailActivity : AppCompatActivity() {
     fun showDirectoryContents(directoryUri: Uri) {
         supportFragmentManager.transaction {
             val directoryTag = directoryUri.toString()
-            val directoryFragment = DetailFragment.newInstance(directoryUri)
+            val directoryFragment = DetailFactory.create(storageType, directoryUri)
             replace(R.id.detail_fragment_container, directoryFragment, directoryTag)
             addToBackStack(directoryTag)
         }
@@ -113,12 +132,14 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val DETAIL_STORAGE_VOLUME = "detail_storage_volume"
+        const val DETAIL_STORAGE_TYPE = "detail_storage_type"
         const val REQUEST_CODE_OPEN_DIRECTORY = 0xf11e
 
-        fun openDetail(context: Context?, volume: StorageVolume) {
+        fun openDetail(context: Context?, volume: StorageVolume, @StorageType type: Int) {
             context?.let {
                 val intent = Intent(context, DetailActivity::class.java).apply {
                     putExtra(DETAIL_STORAGE_VOLUME, volume)
+                    putExtra(DETAIL_STORAGE_TYPE, type)
                 }
                 it.startActivity(intent)
             }

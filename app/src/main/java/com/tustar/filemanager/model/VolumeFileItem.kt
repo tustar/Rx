@@ -6,9 +6,8 @@ data class VolumeFileItem(private val documentFile: DocumentFile) : DetailFileIt
     override val name: String? by lazy { documentFile.name }
     override val type: String? by lazy { documentFile.type }
     override val isDirectory: Boolean by lazy { documentFile.isDirectory }
-    override val isHidden: Boolean? by lazy { documentFile.name?.startsWith(".") }
+    override val isHidden: Boolean by lazy { documentFile.name?.startsWith(".") ?: false }
     override val lastModified: Long by lazy { documentFile.lastModified() }
-    override val uri get() = documentFile.uri
     override val length: Long by lazy {
         if (documentFile.isDirectory) {
             documentFile.listFiles().filterNot {
@@ -18,6 +17,7 @@ data class VolumeFileItem(private val documentFile: DocumentFile) : DetailFileIt
             documentFile.length()
         }
     }
+    override val uri get() = documentFile.uri
 
 
     fun rename(newName: String): VolumeFileItem {
@@ -26,7 +26,7 @@ data class VolumeFileItem(private val documentFile: DocumentFile) : DetailFileIt
     }
 }
 
-fun Array<DocumentFile>.toCachingList(): List<VolumeFileItem> {
+fun Array<DocumentFile>.toList(): List<VolumeFileItem> {
     val list = mutableListOf<VolumeFileItem>()
     forEach { list += VolumeFileItem(it) }
     return list

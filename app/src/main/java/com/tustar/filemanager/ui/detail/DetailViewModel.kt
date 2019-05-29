@@ -9,8 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.tustar.filemanager.LiveEvent
 import com.tustar.filemanager.model.DetailFileItem
 import com.tustar.filemanager.model.VolumeFileItem
-import com.tustar.filemanager.model.VolumeItem
-import com.tustar.filemanager.model.toCachingList
+import com.tustar.filemanager.model.toList
 import com.tustar.rxjava.util.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +30,7 @@ class DetailViewModel(application: Application) : AndroidViewModel(application) 
         Logger.d("directoryUri:$directoryUri")
         val documentsTree = DocumentFile.fromTreeUri(getApplication(), directoryUri) ?: return
         Logger.d("documentsTree:${documentsTree.uri}")
-        val childDocuments = documentsTree.listFiles().toCachingList()
+        val childDocuments = documentsTree.listFiles().toList()
 
         // It's much nicer when the documents are sorted by something, so we'll sort the documents
         // we got by name. Unfortunate there may be quite a few documents, and sorting can take

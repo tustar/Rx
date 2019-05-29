@@ -53,7 +53,7 @@ class CategoryAdapter : BaseAdapter() {
         fun bindItem(item: CategoryItem) {
             icon.setImageResource(item.icon)
             name.setText(item.name)
-            count.text = item.count.toString()
+            count.text = "(${item.count})"
 
             itemView.setOnClickListener {
                 onItemClickListener?.onItemClick(item)

@@ -13,7 +13,6 @@ import com.tustar.filemanager.utils.FileUtils
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import kotlinx.android.synthetic.main.item_file_list.view.*
-import java.lang.Exception
 
 class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -54,9 +53,6 @@ class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
             if (item.isDirectory) {
                 icon.setImageResource(R.drawable.format_folder)
             } else {
-                item.name?.let {
-                    icon.setImageDrawable(FileUtils.getFileTypeDrawableByName(itemView.context, it))
-                }
                 Glide.with(context).load(item.uri).into(icon)
             }
 

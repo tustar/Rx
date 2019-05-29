@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.tustar.filemanager.annotation.TYPE_STORAGE_PHONE
 import com.tustar.filemanager.model.VolumeItem
 import com.tustar.filemanager.ui.detail.DetailActivity
 import com.tustar.rxjava.R
@@ -61,7 +62,7 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
     }
 
     override fun onItemClick(item: VolumeItem) {
-        DetailActivity.openDetail(context, item.volume)
+        DetailActivity.openDetail(context, item.volume, TYPE_STORAGE_PHONE)
     }
 
     companion object {
