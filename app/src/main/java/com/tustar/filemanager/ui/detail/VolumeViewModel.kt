@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class DetailViewModel(application: Application) : AndroidViewModel(application) {
+class VolumeViewModel(application: Application) : AndroidViewModel(application) {
     private val _documents = MutableLiveData<List<VolumeFileItem>>()
     val documents = _documents
 

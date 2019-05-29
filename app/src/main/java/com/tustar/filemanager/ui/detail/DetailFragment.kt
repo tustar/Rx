@@ -16,14 +16,7 @@ import kotlinx.android.synthetic.main.fragment_detail.*
 private const val ARG_DIRECTORY_URI = "arg_directory_uri"
 
 open class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem> {
-
-    protected lateinit var viewModel: DetailViewModel
     protected lateinit var detailAdapter: DetailAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_detail, container, false)
@@ -35,7 +28,7 @@ open class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem> {
     }
 
     override fun onItemClick(clickedDocument: DetailFileItem) {
-        viewModel.documentClicked(clickedDocument)
+
     }
 
     private fun initViews() {

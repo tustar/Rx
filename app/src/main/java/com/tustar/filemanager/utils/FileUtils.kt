@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.net.Uri
 import com.tustar.filemanager.model.DetailFileItem
 import com.tustar.rxjava.R
 import org.jetbrains.anko.longToast
@@ -61,6 +62,19 @@ object FileUtils {
             context.startActivity(openIntent)
         } catch (ex: ActivityNotFoundException) {
             context.longToast(context.resources.getString(R.string.error_no_activity, document.name))
+        }
+    }
+
+    fun openDocument(context: Context?, uri: Uri) {
+        context ?: return
+        try {
+            val openIntent = Intent(Intent.ACTION_VIEW).apply {
+                flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                data = uri
+            }
+            context.startActivity(openIntent)
+        } catch (ex: ActivityNotFoundException) {
+            context.longToast(context.resources.getString(R.string.error_no_activity, uri))
         }
     }
 }

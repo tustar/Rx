@@ -19,7 +19,6 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     val categories: LiveData<List<CategoryItem>>
         get() = _categories
 
-
     private val _imageCount = MutableLiveData<Int>()
     val imageCount: LiveData<Int>
         get() = _imageCount

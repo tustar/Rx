@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.tustar.filemanager.model.DetailFileItem
 import com.tustar.filemanager.utils.DateUtils
 import com.tustar.filemanager.utils.FileUtils
@@ -53,7 +54,12 @@ class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
             if (item.isDirectory) {
                 icon.setImageResource(R.drawable.format_folder)
             } else {
-                Glide.with(context).load(item.uri).into(icon)
+                Glide.with(context)
+                        .applyDefaultRequestOptions(RequestOptions
+                                .placeholderOf(R.drawable.format_image)
+                                .error(R.drawable.format_unkown))
+                        .load(item.uri)
+                        .into(icon)
             }
 
             name.text = item.name

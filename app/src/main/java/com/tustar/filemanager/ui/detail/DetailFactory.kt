@@ -4,9 +4,12 @@ import android.net.Uri
 import com.tustar.filemanager.annotation.*
 
 object DetailFactory {
-    fun create(@DetailType detailType: Int, directoryUri: Uri? = null): DetailFragment {
+    fun create(@DetailType detailType: Int,
+               directoryUri: Uri? = null,
+               bucketId: Long = 0): DetailFragment {
         return when (detailType) {
-            TYPE_IMAGE -> ImageFragment.newInstance()
+            TYPE_IMAGE_BUCKET -> ImageBucketFragment.newInstance()
+            TYPE_IMAGE_BUCKET_ITEM -> ImageBucketItemFragment.newInstance(bucketId)
             TYPE_AUDIO -> AudioFragment.newInstance()
             TYPE_VIDEO -> VideoFragment.newInstance()
             TYPE_DOC -> DocFragment.newInstance()

@@ -62,7 +62,7 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
     }
 
     override fun onItemClick(item: VolumeItem) {
-        DetailActivity.openDetail(context, item.volume, TYPE_STORAGE_PHONE)
+        DetailActivity.openVolumeDetail(context, TYPE_STORAGE_PHONE, item.volume)
     }
 
     companion object {

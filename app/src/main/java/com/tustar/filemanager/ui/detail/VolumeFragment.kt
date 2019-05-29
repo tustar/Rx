@@ -5,20 +5,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.net.toUri
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.tustar.filemanager.model.DetailFileItem
 import com.tustar.filemanager.utils.FileUtils
-import com.tustar.rxjava.base.OnItemClickListener
 
-private const val ARG_DIRECTORY_URI = "arg_directory_uri"
-
-class VolumeFragment : DetailFragment(), OnItemClickListener<DetailFileItem> {
+class VolumeFragment : DetailFragment() {
 
     private lateinit var directoryUri: Uri
+    private lateinit var viewModel: VolumeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         directoryUri = arguments?.getString(ARG_DIRECTORY_URI)?.toUri()
                 ?: throw IllegalArgumentException("Must pass URI of directory to open")
+        viewModel = ViewModelProviders.of(this).get(VolumeViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,8 +27,8 @@ class VolumeFragment : DetailFragment(), OnItemClickListener<DetailFileItem> {
         viewModel.loadDirectory(directoryUri)
     }
 
-    override fun onItemClick(clickedDocument: DetailFileItem) {
-        viewModel.documentClicked(clickedDocument)
+    override fun onItemClick(item: DetailFileItem) {
+        viewModel.documentClicked(item)
     }
 
     private fun initObservers() {
@@ -38,7 +38,7 @@ class VolumeFragment : DetailFragment(), OnItemClickListener<DetailFileItem> {
 
         viewModel.openDirectory.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let { directory ->
-                (activity as? DetailActivity)?.showDirectoryContents(directory.uri!!)
+                (activity as? DetailActivity)?.showDetailContent(directory.uri!!)
             }
         })
 
@@ -50,6 +50,9 @@ class VolumeFragment : DetailFragment(), OnItemClickListener<DetailFileItem> {
     }
 
     companion object {
+
+        private const val ARG_DIRECTORY_URI = "arg_directory_uri"
+
         @JvmStatic
         fun newInstance(directoryUri: Uri) = VolumeFragment().apply {
             arguments = Bundle().apply {

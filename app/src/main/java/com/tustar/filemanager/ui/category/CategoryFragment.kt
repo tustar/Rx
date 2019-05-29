@@ -75,7 +75,7 @@ class CategoryFragment : Fragment(), OnItemClickListener<CategoryItem> {
     }
 
     override fun onItemClick(item: CategoryItem) {
-
+        DetailActivity.openCategoryDetail(context, item.detailType)
     }
 
     companion object {

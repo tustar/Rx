@@ -1,7 +1,7 @@
 package com.tustar.filemanager.ui.detail
 
 
-open class AppFragment : DetailFragment() {
+class AppFragment : DetailFragment() {
 
     companion object {
         @JvmStatic
