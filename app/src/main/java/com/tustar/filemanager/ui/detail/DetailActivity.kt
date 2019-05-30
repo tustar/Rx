@@ -17,7 +17,7 @@ import com.tustar.rxjava.util.Logger
 class DetailActivity : AppCompatActivity() {
 
     private var directoryUri: Uri? = null
-    @DetailType
+    @CategoryType
     private var detailType: Int = TYPE_STORAGE_PHONE
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +78,7 @@ class DetailActivity : AppCompatActivity() {
         const val DETAIL_STORAGE_URI = "detail_storage_uri"
         const val DETAIL_STORAGE_TYPE = "detail_storage_type"
 
-        fun openVolumeDetail(context: Context?, @DetailType detailType: Int, directoryUri: Uri) {
+        fun openVolumeDetail(context: Context?, @CategoryType detailType: Int, directoryUri: Uri) {
             context?.let {
                 val intent = Intent(context, DetailActivity::class.java).apply {
                     putExtra(DETAIL_STORAGE_URI, directoryUri)
@@ -88,7 +88,7 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        fun openCategoryDetail(context: Context?, @DetailType detailType: Int) {
+        fun openCategoryDetail(context: Context?, @CategoryType detailType: Int) {
             context?.let {
                 val intent = Intent(context, DetailActivity::class.java).apply {
                     putExtra(DETAIL_STORAGE_TYPE, detailType)

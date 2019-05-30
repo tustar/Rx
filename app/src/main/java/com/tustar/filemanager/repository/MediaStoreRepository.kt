@@ -1,6 +1,8 @@
 package com.tustar.filemanager.repository
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.provider.MediaStore
 import com.tustar.filemanager.model.AudioFileItem
 import com.tustar.filemanager.model.ImageBucketFileItem
@@ -44,14 +46,28 @@ class MediaStoreRepository(val context: Context) {
         return emptyList()
     }
 
+    @SuppressLint("InlinedApi")
     fun queryImagesByeBucketId(bucketId: Long): List<ImageFileItem> {
-        val projection = arrayOf(
-                MediaStore.Images.ImageColumns._ID,
-                MediaStore.Images.ImageColumns.DISPLAY_NAME,
-                MediaStore.Images.ImageColumns.MIME_TYPE,
-                MediaStore.Images.ImageColumns.DATE_MODIFIED,
-                MediaStore.Images.ImageColumns.SIZE
-        )
+        val projection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            arrayOf(
+                    MediaStore.Images.ImageColumns._ID,
+                    MediaStore.Images.ImageColumns.DISPLAY_NAME,
+                    MediaStore.Images.ImageColumns.MIME_TYPE,
+                    MediaStore.Images.ImageColumns.DATE_MODIFIED,
+                    MediaStore.Images.ImageColumns.SIZE,
+                    MediaStore.Images.ImageColumns.DOCUMENT_ID,
+                    MediaStore.Images.ImageColumns.ORIGINAL_DOCUMENT_ID,
+                    MediaStore.Images.ImageColumns.OWNER_PACKAGE_NAME,
+                    MediaStore.Images.ImageColumns.RELATIVE_PATH
+            )
+        } else {
+            arrayOf(
+                    MediaStore.Images.ImageColumns._ID,
+                    MediaStore.Images.ImageColumns.DISPLAY_NAME,
+                    MediaStore.Images.ImageColumns.MIME_TYPE,
+                    MediaStore.Images.ImageColumns.DATE_MODIFIED,
+                    MediaStore.Images.ImageColumns.SIZE)
+        }
         val selection = " ${MediaStore.Images.ImageColumns.BUCKET_ID}=$bucketId "
         resolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 projection,

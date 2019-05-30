@@ -9,7 +9,7 @@ data class CategoryItem(@DrawableRes val icon: Int,
                         @StringRes val name: Int,
                         var count: Int = 0,
                         var hasNew: Boolean = false,
-                       @DetailType val detailType: Int) {
+                       @CategoryType val detailType: Int) {
     companion object {
         private val IMAGE = CategoryItem(
                 icon = R.drawable.format_image,

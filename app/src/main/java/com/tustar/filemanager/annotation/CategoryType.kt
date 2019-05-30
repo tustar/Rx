@@ -27,5 +27,5 @@ const val TYPE_STORAGE_USB = 10
         TYPE_STORAGE_USB)
 
 @Retention(AnnotationRetention.SOURCE)
-annotation class DetailType
+annotation class CategoryType
 

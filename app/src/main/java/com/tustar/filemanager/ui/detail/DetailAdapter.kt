@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.tustar.filemanager.model.DetailFileItem
+import com.tustar.filemanager.model.ImageFileItem
 import com.tustar.filemanager.utils.DateUtils
 import com.tustar.filemanager.utils.FileUtils
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
+import com.tustar.rxjava.util.Logger
 import kotlinx.android.synthetic.main.item_file_list.view.*
 
 class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
@@ -84,6 +86,14 @@ class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
 
             itemView.setOnClickListener {
                 listener?.onItemClick(item)
+            }
+
+
+            if (item is ImageFileItem) {
+                Logger.d("documentId:${item.documentId}\n" +
+                        "originalDocumentId:${item.originalDocumentId}\n" +
+                        "ownerPackageName:${item.ownerPackageName}\n" +
+                        "relativePath:${item.relativePath}")
             }
         }
     }
