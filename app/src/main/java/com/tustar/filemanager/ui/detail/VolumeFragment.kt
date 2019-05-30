@@ -3,7 +3,6 @@ package com.tustar.filemanager.ui.detail
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tustar.filemanager.model.DetailFileItem
@@ -16,7 +15,7 @@ class VolumeFragment : DetailFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        directoryUri = arguments?.getString(ARG_DIRECTORY_URI)?.toUri()
+        directoryUri = arguments?.getParcelable(ARG_DIRECTORY_URI)
                 ?: throw IllegalArgumentException("Must pass URI of directory to open")
         viewModel = ViewModelProviders.of(this).get(VolumeViewModel::class.java)
     }
@@ -56,7 +55,7 @@ class VolumeFragment : DetailFragment() {
         @JvmStatic
         fun newInstance(directoryUri: Uri) = VolumeFragment().apply {
             arguments = Bundle().apply {
-                putString(ARG_DIRECTORY_URI, directoryUri.toString())
+                putParcelable(ARG_DIRECTORY_URI, directoryUri)
             }
         }
     }
