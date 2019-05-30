@@ -1,11 +1,13 @@
 package com.tustar.filemanager.model
 
 import android.content.Context
+import android.hardware.usb.UsbManager
 import android.os.Build
 import android.os.storage.StorageManager
 import android.os.storage.StorageVolume
 import androidx.annotation.DrawableRes
 import com.tustar.rxjava.R
+import com.tustar.rxjava.util.Logger
 
 data class VolumeItem(@DrawableRes val icon: Int,
                       val name: String,
@@ -36,6 +38,25 @@ data class VolumeItem(@DrawableRes val icon: Int,
                             name = volume.getDescription(context),
                             volume = volume)
                     items.add(item)
+                }
+            }
+
+            val usbManager = context.getSystemService(Context.USB_SERVICE)
+                    as UsbManager
+            var productName = ""
+            usbManager.deviceList.values.forEach { usbDevice ->
+                Logger.d("productName:${usbDevice.productName}")
+                if (usbDevice.interfaceCount == 1) {
+                    if (usbDevice.getInterface(0).interfaceClass == 8) {
+                        productName = usbDevice.productName.toString()
+                        if (productName.isEmpty()) {
+                            "USB-OTG device detected : "
+                        } else {
+                            "USB-OTG device detected : $productName"
+                        }
+                    }
+                } else {
+
                 }
             }
             return items
