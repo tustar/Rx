@@ -1,7 +1,7 @@
 package com.tustar.filemanager.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.tustar.rxjava.R
 
 class MainActivity : AppCompatActivity() {

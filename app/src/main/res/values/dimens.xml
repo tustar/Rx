@@ -3,4 +3,7 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="app_bar_height">190dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="image_width">48dp</dimen>
+    <dimen name="image_height">48dp</dimen>
 </resources>
