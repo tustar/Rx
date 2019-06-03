@@ -1,6 +1,5 @@
 package com.tustar.filemanager.ui.category
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tustar.filemanager.model.CategoryItem
 import com.tustar.filemanager.ui.detail.DetailActivity
+import com.tustar.filemanager.ui.detail.DetailParams
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import kotlinx.android.synthetic.main.fragment_category.*
@@ -75,7 +75,7 @@ class CategoryFragment : Fragment(), OnItemClickListener<CategoryItem> {
     }
 
     override fun onItemClick(item: CategoryItem) {
-        DetailActivity.openCategoryDetail(context, item.detailType)
+        DetailActivity.openVolumeDetail(context, DetailParams(item.type))
     }
 
     companion object {

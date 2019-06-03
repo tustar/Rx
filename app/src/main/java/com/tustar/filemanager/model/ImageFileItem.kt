@@ -21,6 +21,10 @@ class ImageFileItem : MediaFileItem() {
             while (cursor.moveToNext()) {
                 val id = cursor.getLong(cursor.getColumnIndex(
                         MediaStore.Images.ImageColumns._ID))
+                val bucketId = cursor.getLong(cursor.getColumnIndex(
+                        MediaStore.Images.ImageColumns.BUCKET_ID))
+                val bucketDisplayName = cursor.getString(cursor.getColumnIndex(
+                        MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME))
                 val displayName = cursor.getString(cursor.getColumnIndex(
                         MediaStore.Images.ImageColumns.DISPLAY_NAME))
                 val mimeType = cursor.getString(cursor.getColumnIndex(
@@ -30,6 +34,8 @@ class ImageFileItem : MediaFileItem() {
                 val size = cursor.getLong(cursor.getColumnIndex(
                         MediaStore.Images.ImageColumns.SIZE))
                 val item = ImageFileItem()
+                item.bucketId = bucketId
+                item.bucketName = bucketDisplayName
                 item.name = displayName
                 item.type = mimeType
                 item.lastModified = dateModified

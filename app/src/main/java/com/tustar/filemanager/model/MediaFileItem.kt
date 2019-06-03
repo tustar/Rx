@@ -12,5 +12,9 @@ open class MediaFileItem : DetailFileItem() {
     override var lastModified = 0L
     override var length: Long = 0L
     override var uri: Uri? = null
+
+    var bucketId: Long? = null
+    var bucketName: String? = null
+    var isBucket = bucketName?.isNullOrEmpty() ?: false
 }
 

@@ -2,7 +2,7 @@
     <string name="app_name">RxJava</string>
 
     <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="title_activity_files">File Manager</string>
+    <string name="title_activity_files">文件管理</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -110,6 +110,5 @@
 
     <string name="error_no_activity">No activity found to open "%1$s".</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navi_home">首页</string>
 </resources>

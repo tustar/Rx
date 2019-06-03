@@ -18,6 +18,7 @@ import com.tustar.filemanager.annotation.TYPE_STORAGE_PHONE
 import com.tustar.filemanager.extension.uid
 import com.tustar.filemanager.model.VolumeItem
 import com.tustar.filemanager.ui.detail.DetailActivity
+import com.tustar.filemanager.ui.detail.DetailParams
 import com.tustar.filemanager.utils.Constants.EXTERNAL_STORAGE_PROVIDER_AUTHORITY
 import com.tustar.filemanager.utils.StorageUtils
 import com.tustar.rxjava.R
@@ -31,7 +32,7 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
 
     private lateinit var volumeAdapter: VolumeAdapter
     private lateinit var viewModel: VolumeViewModel
-    private var uuid: String? = null
+    private var volumeItem: VolumeItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,16 +74,17 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
     }
 
     override fun onItemClick(item: VolumeItem) {
+        volumeItem = item
         val volume = item.volume
         val uuid = volume.uid()
 
         context?.let { context ->
             if (uuid != null) {
-                val directoryUri = StorageUtils.getUuidUri(context, uuid)?.toUri()
-                if (directoryUri == null) {
+                val volumeUri = StorageUtils.getUuidUri(context, uuid)?.toUri()
+                if (volumeUri == null) {
                     openDirectory(uuid)
                 } else {
-                    openVolumeDetail(directoryUri)
+                    openVolumeDetail(volumeUri)
                 }
             }
         }
@@ -92,39 +94,37 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_OPEN_DIRECTORY && resultCode == Activity.RESULT_OK) {
-            val directoryUri: Uri
+            val volumeUri: Uri
             if (data?.data == null) {
                 toast("授权失败")
                 return
             } else {
-                directoryUri = data?.data!!
+                volumeUri = data?.data!!
             }
-            val uuid: String? = directoryUri.lastPathSegment?.replace(":", "")
+            val uuid: String? = volumeUri.lastPathSegment?.replace(":", "")
             if (uuid == null) {
                 toast("授权目录不相符")
                 return
             }
 
-            if (!this.uuid.equals(uuid, ignoreCase = true)) {
+            if (!volumeItem!!.volume.uid().equals(uuid, ignoreCase = true)) {
                 toast("授权目录不相符")
                 return
             }
 
             // Save
             context?.contentResolver?.takePersistableUriPermission(
-                    directoryUri,
+                    volumeUri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
             )
-            StorageUtils.saveUuidUri(context!!, uuid!!, directoryUri)
+            StorageUtils.saveUuidUri(context!!, uuid!!, volumeUri)
 
             // Navigation
-            openVolumeDetail(directoryUri)
+            openVolumeDetail(volumeUri)
         }
     }
 
     private fun openDirectory(uuid: String) {
-        this.uuid = uuid
-
         val volumeUri = DocumentsContract.buildRootUri(
                 EXTERNAL_STORAGE_PROVIDER_AUTHORITY, uuid)
         Logger.d("volumeUri:$volumeUri")
@@ -137,8 +137,11 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
         startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY)
     }
 
-    private fun openVolumeDetail(directoryUri: Uri) {
-        DetailActivity.openVolumeDetail(context, TYPE_STORAGE_PHONE, directoryUri)
+    private fun openVolumeDetail(volumeUri: Uri) {
+        DetailActivity.openVolumeDetail(context, DetailParams(
+                type = TYPE_STORAGE_PHONE,
+                directoryUri = volumeUri,
+                volumeName = volumeItem!!.name))
     }
 
     companion object {

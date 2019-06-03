@@ -15,16 +15,16 @@ import com.tustar.filemanager.utils.FileUtils
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.util.Logger
-import kotlinx.android.synthetic.main.item_file_list.view.*
+import kotlinx.android.synthetic.main.item_detail_content.view.*
 
-class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
+class DetailContentAdapter(private val listener: OnItemClickListener<DetailFileItem>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val directoryEntries = mutableListOf<DetailFileItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_file_list, parent, false)
+                .inflate(R.layout.item_detail_content, parent, false)
         return ViewHolder(view)
     }
 
@@ -64,7 +64,10 @@ class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
                         .into(icon)
             }
 
-            name.text = item.name
+            name.text = when {
+                item is ImageFileItem && item.isBucket -> item.bucketName
+                else -> item.name
+            }
 
             size.text = if (item.isDirectory) {
                 if (item.length == 1L) {

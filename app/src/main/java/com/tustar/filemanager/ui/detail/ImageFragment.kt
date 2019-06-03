@@ -5,16 +5,17 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tustar.filemanager.model.DetailFileItem
-import com.tustar.filemanager.model.ImageBucketFileItem
-import com.tustar.rxjava.util.Logger
+import com.tustar.filemanager.model.DetailNaviItem
+import com.tustar.filemanager.model.ImageFileItem
+import com.tustar.rxjava.R
 
-class ImageBucketFragment : DetailFragment() {
+class ImageFragment : DetailFragment() {
 
-    private lateinit var viewModel: ImageBucketViewModel
+    private lateinit var viewModel: ImageViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ImageBucketViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(ImageViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -23,20 +24,26 @@ class ImageBucketFragment : DetailFragment() {
         viewModel.loadImageBucket()
     }
 
+    override fun initCurrentNaviItem() {
+        super.initCurrentNaviItem()
+        currentNaviItem = DetailNaviItem(getString(R.string.category_image))
+    }
+
     override fun onItemClick(item: DetailFileItem) {
-        if (item is ImageBucketFileItem) {
-            (activity as? DetailActivity)?.showDetailContent(bucketId = item.bucketId)
+        super.onItemClick(item)
+        if (item is ImageFileItem) {
+            viewModel.loadImageBucket()
         }
     }
 
     private fun initObservers() {
         viewModel.documents.observe(this, Observer { documents ->
-            documents?.let { detailAdapter.setEntries(documents) }
+            documents?.let { contentAdapter.setEntries(documents) }
         })
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = ImageBucketFragment()
+        fun newInstance() = ImageFragment()
     }
 }

@@ -5,7 +5,6 @@ import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
 import com.tustar.filemanager.model.AudioFileItem
-import com.tustar.filemanager.model.ImageBucketFileItem
 import com.tustar.filemanager.model.ImageFileItem
 import com.tustar.filemanager.model.VideoFileItem
 
@@ -25,7 +24,7 @@ class MediaStoreRepository(val context: Context) {
                 }
     }
 
-    fun queryImageBucketItems(): List<ImageBucketFileItem> {
+    fun queryImageBucketItems(): List<ImageFileItem> {
         val projection = arrayOf(
                 MediaStore.Images.ImageColumns.BUCKET_ID,
                 MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
@@ -40,7 +39,7 @@ class MediaStoreRepository(val context: Context) {
                 null)
                 .use { cursor ->
                     cursor?.let {
-                        return ImageBucketFileItem.toList(cursor)
+                        return ImageFileItem.toList(cursor)
                     }
                 }
         return emptyList()
