@@ -14,12 +14,11 @@ import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.util.Logger
 import kotlinx.android.synthetic.main.fragment_detail.*
 
-
 open class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem>,
         DetailNaviAdapter.OnNaviItemClickListener {
 
     protected lateinit var contentAdapter: DetailContentAdapter
-    private lateinit var naviAdapter: DetailNaviAdapter
+    protected lateinit var naviAdapter: DetailNaviAdapter
     protected var currentNaviItem: DetailNaviItem? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,9 +44,24 @@ open class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem>,
 
     override fun onNaviItemClick(item: DetailNaviItem) {
         Logger.i("item:$item")
-        if (item.isHome) {
-            activity?.finish()
+        when {
+            item.isHome -> activity?.finish()
+            item == currentNaviItem -> reload()
+            else -> {
+                naviAdapter.popToNaviItem(item)
+                detail_navi_layout.scrollToPosition(naviAdapter.itemCount)
+            }
         }
+    }
+
+    fun onBackPressed(): Boolean {
+        if(naviAdapter.itemCount >= 2) {
+            return true
+        }
+
+        naviAdapter.pop()
+        detail_navi_layout.scrollToPosition(naviAdapter.itemCount)
+        return false
     }
 
     private fun initViews() {
@@ -68,9 +82,9 @@ open class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem>,
         }
     }
 
-    open fun initCurrentNaviItem() {
+    open fun initCurrentNaviItem() {}
 
-    }
+    open fun reload() {}
 
     companion object {
         @JvmStatic

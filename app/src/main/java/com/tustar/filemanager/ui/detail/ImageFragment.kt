@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.tustar.filemanager.model.DetailFileItem
 import com.tustar.filemanager.model.DetailNaviItem
 import com.tustar.filemanager.model.ImageFileItem
+import com.tustar.filemanager.utils.FileUtils
 import com.tustar.rxjava.R
 
 class ImageFragment : DetailFragment() {
@@ -32,7 +33,20 @@ class ImageFragment : DetailFragment() {
     override fun onItemClick(item: DetailFileItem) {
         super.onItemClick(item)
         if (item is ImageFileItem) {
-            viewModel.loadImageBucket()
+            when (item.isBucket) {
+                true -> {
+                    viewModel.loadImageByBucketId(item.bucketId!!)
+                    currentNaviItem = DetailNaviItem(
+                            name = item.bucketName!!,
+                            uri = item.uri)
+                    naviAdapter.pushNaviItem(currentNaviItem!!)
+                }
+                else -> {
+                    item.uri?.let {
+                        FileUtils.openDocument(context, it)
+                    }
+                }
+            }
         }
     }
 

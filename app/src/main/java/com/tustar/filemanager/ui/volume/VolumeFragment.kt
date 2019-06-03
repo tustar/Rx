@@ -12,7 +12,6 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tustar.filemanager.annotation.TYPE_STORAGE_PHONE
 import com.tustar.filemanager.extension.uid
@@ -141,7 +140,7 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
         DetailActivity.openVolumeDetail(context, DetailParams(
                 type = TYPE_STORAGE_PHONE,
                 directoryUri = volumeUri,
-                volumeName = volumeItem!!.name))
+                name = volumeItem!!.name))
     }
 
     companion object {

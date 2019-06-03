@@ -3,7 +3,6 @@ package com.tustar.filemanager.ui.detail
 import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
@@ -16,21 +15,30 @@ import com.tustar.rxjava.util.Logger
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var params: DetailParams
+    private lateinit var detailFragment: DetailFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-        title = getString(R.string.title_activity_files)
         //
         checkPermissionRequest(this)
         //
         params = intent.getParcelableExtra(ARG_DETAIL_PARAMS)
                 ?: throw IllegalArgumentException("Must pass URI of directory to open")
+        params.name?.let{
+            title = it
+        }
 
         supportFragmentManager.transaction {
             val tag = params.type.toString()
-            val detailFragment = DetailFactory.create(params)
+            detailFragment = DetailFactory.create(params)
             replace(R.id.detail_fragment_container, detailFragment, tag)
+        }
+    }
+
+    override fun onBackPressed() {
+        if(detailFragment.onBackPressed()) {
+            super.onBackPressed()
         }
     }
 

@@ -12,13 +12,15 @@ class ImageFileItem : MediaFileItem() {
     var originalDocumentId: String? = null
     var ownerPackageName: String? = null
     var relativePath: String? = null
-
+    var isBucket: Boolean = false
 
     companion object {
-        fun toList(cursor: Cursor): List<ImageFileItem> {
+        fun toList(cursor: Cursor, isBucket: Boolean = false): List<ImageFileItem> {
             val items = mutableListOf<ImageFileItem>()
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
+                val item = ImageFileItem()
+                //
                 val id = cursor.getLong(cursor.getColumnIndex(
                         MediaStore.Images.ImageColumns._ID))
                 val bucketId = cursor.getLong(cursor.getColumnIndex(
@@ -33,7 +35,7 @@ class ImageFileItem : MediaFileItem() {
                         MediaStore.Images.ImageColumns.DATE_MODIFIED))
                 val size = cursor.getLong(cursor.getColumnIndex(
                         MediaStore.Images.ImageColumns.SIZE))
-                val item = ImageFileItem()
+                //
                 item.bucketId = bucketId
                 item.bucketName = bucketDisplayName
                 item.name = displayName
@@ -41,6 +43,7 @@ class ImageFileItem : MediaFileItem() {
                 item.lastModified = dateModified
                 item.length = size
                 item.uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
+                item.isBucket = isBucket
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     val documentId = cursor.getString(cursor.getColumnIndex(

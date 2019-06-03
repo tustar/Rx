@@ -31,7 +31,7 @@ class VolumeFragment : DetailFragment() {
 
     override fun initCurrentNaviItem() {
         super.initCurrentNaviItem()
-        params.volumeName?.let {
+        params.name?.let {
             currentNaviItem = DetailNaviItem(
                     name = it,
                     uri = params.directoryUri)
@@ -40,34 +40,27 @@ class VolumeFragment : DetailFragment() {
 
     override fun onItemClick(item: DetailFileItem) {
         super.onItemClick(item)
-        viewModel.documentClicked(item)
+        if (item.isDirectory) {
+            viewModel.loadDirectory(item.uri!!)
+            currentNaviItem = DetailNaviItem(
+                    name = item.name!!,
+                    uri = item.uri)
+            naviAdapter.pushNaviItem(currentNaviItem!!)
+        } else {
+            FileUtils.openDocument(context, item)
+        }
     }
 
-    override fun onNaviItemClick(item: DetailNaviItem) {
-        super.onNaviItemClick(item)
-
-        if (item == currentNaviItem) {
-            currentNaviItem?.uri?.let {
-                viewModel.loadDirectory(it)
-            }
+    override fun reload() {
+        super.reload()
+        currentNaviItem?.uri?.let {
+            viewModel.loadDirectory(it)
         }
     }
 
     private fun initObservers() {
         viewModel.documents.observe(this, Observer { documents ->
             documents?.let { contentAdapter.setEntries(documents) }
-        })
-
-        viewModel.openDirectory.observe(this, Observer { event ->
-            event.getContentIfNotHandled()?.let { directory ->
-                viewModel.loadDirectory(directory.uri!!)
-            }
-        })
-
-        viewModel.openDocument.observe(this, Observer { event ->
-            event.getContentIfNotHandled()?.let { document ->
-                FileUtils.openDocument(context, document)
-            }
         })
     }
 

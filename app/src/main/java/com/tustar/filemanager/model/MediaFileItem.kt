@@ -15,6 +15,5 @@ open class MediaFileItem : DetailFileItem() {
 
     var bucketId: Long? = null
     var bucketName: String? = null
-    var isBucket = bucketName?.isNullOrEmpty() ?: false
 }
 

@@ -20,12 +20,6 @@ class VolumeViewModel(application: Application) : AndroidViewModel(application) 
     private val _documents = MutableLiveData<List<VolumeFileItem>>()
     val documents = _documents
 
-    private val _openDirectory = MutableLiveData<LiveEvent<DetailFileItem>>()
-    val openDirectory = _openDirectory
-
-    private val _openDocument = MutableLiveData<LiveEvent<DetailFileItem>>()
-    val openDocument = _openDocument
-
     fun loadDirectory(directoryUri: Uri) {
         Logger.d("directoryUri:$directoryUri")
         val documentsTree = DocumentFile.fromTreeUri(getApplication(), directoryUri) ?: return
@@ -45,18 +39,6 @@ class VolumeViewModel(application: Application) : AndroidViewModel(application) 
 
             }
             _documents.postValue(sortedDocuments)
-        }
-    }
-
-    /**
-     * Method to dispatch between clicking on a document (which should be opened), and
-     * a directory (which the user wants to navigate into).
-     */
-    fun documentClicked(clickedDocument: DetailFileItem) {
-        if (clickedDocument.isDirectory) {
-            openDirectory.postValue(LiveEvent(clickedDocument))
-        } else {
-            openDocument.postValue(LiveEvent(clickedDocument))
         }
     }
 }

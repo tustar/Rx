@@ -12,6 +12,8 @@ class VideoFileItem : MediaFileItem() {
             val items = mutableListOf<VideoFileItem>()
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
+                val item = VideoFileItem()
+                //
                 val id = cursor.getLong(cursor.getColumnIndex(
                         MediaStore.Video.VideoColumns._ID))
                 val displayName = cursor.getString(cursor.getColumnIndex(
@@ -22,7 +24,7 @@ class VideoFileItem : MediaFileItem() {
                         MediaStore.Video.VideoColumns.DATE_MODIFIED))
                 val size = cursor.getLong(cursor.getColumnIndex(
                         MediaStore.Video.VideoColumns.SIZE))
-                val item = VideoFileItem()
+                //
                 item.name = displayName
                 item.type = mimeType
                 item.lastModified = dateModified

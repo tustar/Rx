@@ -12,6 +12,8 @@ class AudioFileItem : MediaFileItem() {
             val items = mutableListOf<AudioFileItem>()
             cursor.moveToFirst()
             while (cursor.moveToNext()) {
+                val item = AudioFileItem()
+                //
                 val id = cursor.getLong(cursor.getColumnIndex(
                         MediaStore.Audio.AudioColumns._ID))
                 val displayName = cursor.getString(cursor.getColumnIndex(
@@ -22,7 +24,7 @@ class AudioFileItem : MediaFileItem() {
                         MediaStore.Audio.AudioColumns.DATE_MODIFIED))
                 val size = cursor.getLong(cursor.getColumnIndex(
                         MediaStore.Audio.AudioColumns.SIZE))
-                val item = AudioFileItem()
+                //
                 item.name = displayName
                 item.type = mimeType
                 item.lastModified = dateModified

@@ -38,6 +38,11 @@ class DetailNaviAdapter(private val listener: OnNaviItemClickListener)
         notifyDataSetChanged()
     }
 
+    fun pop() {
+        naviEntries.removeLast()
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int = naviEntries.size
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

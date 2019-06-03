@@ -26,8 +26,10 @@ class MediaStoreRepository(val context: Context) {
 
     fun queryImageBucketItems(): List<ImageFileItem> {
         val projection = arrayOf(
+                MediaStore.Images.ImageColumns._ID,
                 MediaStore.Images.ImageColumns.BUCKET_ID,
                 MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+                MediaStore.Images.ImageColumns.DISPLAY_NAME,
                 MediaStore.Images.ImageColumns.MIME_TYPE,
                 MediaStore.Images.ImageColumns.DATE_MODIFIED,
                 MediaStore.Images.ImageColumns.SIZE
@@ -39,7 +41,7 @@ class MediaStoreRepository(val context: Context) {
                 null)
                 .use { cursor ->
                     cursor?.let {
-                        return ImageFileItem.toList(cursor)
+                        return ImageFileItem.toList(cursor, true)
                     }
                 }
         return emptyList()
@@ -50,6 +52,8 @@ class MediaStoreRepository(val context: Context) {
         val projection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             arrayOf(
                     MediaStore.Images.ImageColumns._ID,
+                    MediaStore.Images.ImageColumns.BUCKET_ID,
+                    MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
                     MediaStore.Images.ImageColumns.DISPLAY_NAME,
                     MediaStore.Images.ImageColumns.MIME_TYPE,
                     MediaStore.Images.ImageColumns.DATE_MODIFIED,
@@ -62,6 +66,8 @@ class MediaStoreRepository(val context: Context) {
         } else {
             arrayOf(
                     MediaStore.Images.ImageColumns._ID,
+                    MediaStore.Images.ImageColumns.BUCKET_ID,
+                    MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
                     MediaStore.Images.ImageColumns.DISPLAY_NAME,
                     MediaStore.Images.ImageColumns.MIME_TYPE,
                     MediaStore.Images.ImageColumns.DATE_MODIFIED,

@@ -8,7 +8,7 @@ import com.tustar.filemanager.annotation.CategoryType
 data class DetailParams(
         @CategoryType val type: Int,
         val directoryUri: Uri? = null,
-        val volumeName: String? = null
+        val name: String? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
@@ -18,7 +18,7 @@ data class DetailParams(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(type)
         parcel.writeParcelable(directoryUri, flags)
-        parcel.writeString(volumeName)
+        parcel.writeString(name)
     }
 
     override fun describeContents(): Int {
