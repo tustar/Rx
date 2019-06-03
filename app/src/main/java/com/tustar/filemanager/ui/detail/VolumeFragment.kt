@@ -1,22 +1,22 @@
 package com.tustar.filemanager.ui.detail
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.core.net.toUri
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.tustar.filemanager.model.DetailFileItem
+import com.tustar.filemanager.model.DetailNaviItem
+import com.tustar.filemanager.ui.detail.DetailActivity.Companion.ARG_DETAIL_PARAMS
 import com.tustar.filemanager.utils.FileUtils
 
 class VolumeFragment : DetailFragment() {
 
-    private lateinit var directoryUri: Uri
+    private lateinit var params: DetailParams
     private lateinit var viewModel: VolumeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        directoryUri = arguments?.getString(ARG_DIRECTORY_URI)?.toUri()
+        params = arguments?.getParcelable(ARG_DETAIL_PARAMS)
                 ?: throw IllegalArgumentException("Must pass URI of directory to open")
         viewModel = ViewModelProviders.of(this).get(VolumeViewModel::class.java)
     }
@@ -24,21 +24,43 @@ class VolumeFragment : DetailFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
-        viewModel.loadDirectory(directoryUri)
+        params.directoryUri?.let {
+            viewModel.loadDirectory(it)
+        }
+    }
+
+    override fun initCurrentNaviItem() {
+        super.initCurrentNaviItem()
+        params.volumeName?.let {
+            currentNaviItem = DetailNaviItem(
+                    name = it,
+                    uri = params.directoryUri)
+        }
     }
 
     override fun onItemClick(item: DetailFileItem) {
+        super.onItemClick(item)
         viewModel.documentClicked(item)
+    }
+
+    override fun onNaviItemClick(item: DetailNaviItem) {
+        super.onNaviItemClick(item)
+
+        if (item == currentNaviItem) {
+            currentNaviItem?.uri?.let {
+                viewModel.loadDirectory(it)
+            }
+        }
     }
 
     private fun initObservers() {
         viewModel.documents.observe(this, Observer { documents ->
-            documents?.let { detailAdapter.setEntries(documents) }
+            documents?.let { contentAdapter.setEntries(documents) }
         })
 
         viewModel.openDirectory.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let { directory ->
-                (activity as? DetailActivity)?.showDetailContent(directory.uri!!)
+                viewModel.loadDirectory(directory.uri!!)
             }
         })
 
@@ -51,12 +73,10 @@ class VolumeFragment : DetailFragment() {
 
     companion object {
 
-        private const val ARG_DIRECTORY_URI = "arg_directory_uri"
-
         @JvmStatic
-        fun newInstance(directoryUri: Uri) = VolumeFragment().apply {
+        fun newInstance(params: DetailParams) = VolumeFragment().apply {
             arguments = Bundle().apply {
-                putString(ARG_DIRECTORY_URI, directoryUri.toString())
+                putParcelable(ARG_DETAIL_PARAMS, params)
             }
         }
     }

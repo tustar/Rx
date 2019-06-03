@@ -9,7 +9,7 @@
 
     <fragment
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             android:id="@+id/main_category_fragment"
             class="com.tustar.filemanager.ui.category.CategoryFragment"
             android:layout_width="match_parent"
@@ -19,15 +19,37 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout="@layout/fragment_category"/>
 
+    <TextView
+            android:id="@+id/main_storage_devices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/selector_list_item"
+            android:padding="8dp"
+            android:textColor="@color/item_subtitle_text_color"
+            android:textSize="@dimen/item_subtitle_text_size"
+            app:layout_constraintTop_toBottomOf="@id/main_category_fragment"
+            app:layout_constraintBottom_toTopOf="@id/main_volume_fragment"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/main_storage_devices"/>
+
+    <View
+            app:layout_constraintTop_toBottomOf="@id/main_storage_devices"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@color/divider_color"
+            android:id="@+id/main_storage_divider"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider_height"/>
+
     <fragment
             android:id="@+id/main_volume_fragment"
             class="com.tustar.filemanager.ui.volume.VolumeFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main_category_fragment"
+            app:layout_constraintTop_toBottomOf="@id/main_storage_divider"
             tools:layout="@layout/fragment_volume"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

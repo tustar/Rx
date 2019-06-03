@@ -36,7 +36,9 @@ data class VolumeItem(@DrawableRes val icon: Int,
                     }
                     val item = VolumeItem(icon = icon,
                             name = volume.getDescription(context),
-                            volume = volume)
+                            volume = volume,
+                            availableBytes = 50,
+                            totalBytes = 100)
                     items.add(item)
                 }
             }
@@ -44,6 +46,9 @@ data class VolumeItem(@DrawableRes val icon: Int,
             val usbManager = context.getSystemService(Context.USB_SERVICE)
                     as UsbManager
             var productName = ""
+            usbManager.deviceList.forEach { s, usbDevice ->
+                Logger.d("$s=>$usbDevice")
+            }
             usbManager.deviceList.values.forEach { usbDevice ->
                 Logger.d("productName:${usbDevice.productName}")
                 if (usbDevice.interfaceCount == 1) {
@@ -59,6 +64,7 @@ data class VolumeItem(@DrawableRes val icon: Int,
 
                 }
             }
+
             return items
         }
     }

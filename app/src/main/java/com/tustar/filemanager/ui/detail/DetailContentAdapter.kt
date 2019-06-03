@@ -9,20 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.tustar.filemanager.model.DetailFileItem
+import com.tustar.filemanager.model.ImageFileItem
 import com.tustar.filemanager.utils.DateUtils
 import com.tustar.filemanager.utils.FileUtils
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
-import kotlinx.android.synthetic.main.item_file_list.view.*
+import com.tustar.rxjava.util.Logger
+import kotlinx.android.synthetic.main.item_detail_content.view.*
 
-class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
+class DetailContentAdapter(private val listener: OnItemClickListener<DetailFileItem>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val directoryEntries = mutableListOf<DetailFileItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_file_list, parent, false)
+                .inflate(R.layout.item_detail_content, parent, false)
         return ViewHolder(view)
     }
 
@@ -62,7 +64,10 @@ class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
                         .into(icon)
             }
 
-            name.text = item.name
+            name.text = when {
+                item is ImageFileItem && item.isBucket -> item.bucketName
+                else -> item.name
+            }
 
             size.text = if (item.isDirectory) {
                 if (item.length == 1L) {
@@ -84,6 +89,14 @@ class DetailAdapter(private val listener: OnItemClickListener<DetailFileItem>)
 
             itemView.setOnClickListener {
                 listener?.onItemClick(item)
+            }
+
+
+            if (item is ImageFileItem) {
+                Logger.d("documentId:${item.documentId}\n" +
+                        "originalDocumentId:${item.originalDocumentId}\n" +
+                        "ownerPackageName:${item.ownerPackageName}\n" +
+                        "relativePath:${item.relativePath}")
             }
         }
     }

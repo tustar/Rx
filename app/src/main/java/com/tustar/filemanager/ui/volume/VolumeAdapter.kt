@@ -47,7 +47,7 @@ class VolumeAdapter : RecyclerView.Adapter<VolumeAdapter.ViewHolder>() {
             val progress = if (item.totalBytes == 0L) {
                 0
             } else {
-                (item.totalBytes - item.availableBytes / item.totalBytes.toFloat()).toInt()
+                ((item.totalBytes - item.availableBytes) / item.totalBytes.toFloat() * 100).toInt()
             }
             progressBar.progress = progress
 

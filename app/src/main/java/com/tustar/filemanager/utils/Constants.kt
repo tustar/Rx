@@ -17,4 +17,6 @@ object Constants {
     }
 
     const val SHARED_PREFERENCES = "filemanager_shared_preferences"
+
+    const val  EXTERNAL_STORAGE_PROVIDER_AUTHORITY = "com.android.externalstorage.documents"
 }
