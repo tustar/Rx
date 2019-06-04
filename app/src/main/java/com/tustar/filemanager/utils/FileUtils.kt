@@ -9,19 +9,9 @@ import android.net.Uri
 import com.tustar.filemanager.model.DetailItem
 import com.tustar.rxjava.R
 import org.jetbrains.anko.longToast
-import java.text.DecimalFormat
 
 
 object FileUtils {
-    fun getFileSize(length: Long): String {
-        val df = DecimalFormat("######0.0")
-        return when {
-            length < 1024f -> length.toInt().toString() + "B"
-            length < 1024 * 1024f -> df.format(length / 1024f) + "K"
-            length < 1024f * 1024f * 1024f -> df.format(length.toFloat() / 1024f / 1024f) + "M"
-            else -> df.format(length.toFloat() / 1024f / 1024f / 1024f) + "G"
-        }
-    }
 
     fun isInstalled(context: Context, packageName: String): Boolean {
         val packageManager = context.packageManager

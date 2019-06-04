@@ -9,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tustar.filemanager.annotation.TYPE_STORAGE_PHONE
+import com.tustar.filemanager.base.BaseStorageFragment
 import com.tustar.filemanager.extension.uid
 import com.tustar.filemanager.model.StorageItem
 import com.tustar.filemanager.ui.detail.DetailActivity
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_storage.*
 import org.jetbrains.anko.support.v4.toast
 
 
-class StorageFragment : Fragment(), OnItemClickListener<StorageItem> {
+class StorageFragment : BaseStorageFragment(), OnItemClickListener<StorageItem> {
 
     private lateinit var storageAdapter: StorageAdapter
     private lateinit var viewModel: StorageViewModel
@@ -141,6 +141,11 @@ class StorageFragment : Fragment(), OnItemClickListener<StorageItem> {
                 type = TYPE_STORAGE_PHONE,
                 directoryUri = volumeUri,
                 name = storageItem!!.name))
+    }
+
+    override fun onStorageStateChanged() {
+        super.onStorageStateChanged()
+        viewModel.getStorages()
     }
 
     companion object {

@@ -31,7 +31,7 @@
             app:layout_constraintTop_toBottomOf="@id/main_category_fragment"
             app:layout_constraintBottom_toTopOf="@id/main_volume_fragment"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="@string/main_storage_devices"/>
+            android:text="@string/storage_devices"/>
 
     <View
             app:layout_constraintTop_toBottomOf="@id/main_storage_devices"

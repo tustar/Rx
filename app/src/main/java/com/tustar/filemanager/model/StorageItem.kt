@@ -3,6 +3,8 @@ package com.tustar.filemanager.model
 import android.content.Context
 import android.hardware.usb.UsbManager
 import android.os.Build
+import android.os.Environment
+import android.os.StatFs
 import android.os.storage.StorageManager
 import android.os.storage.StorageVolume
 import androidx.annotation.DrawableRes
@@ -29,16 +31,22 @@ data class StorageItem(@DrawableRes val icon: Int,
                     as StorageManager
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 sm.storageVolumes.forEach { volume ->
-                    var icon = if (volume.isPrimary) {
-                        R.drawable.ic_root_smartphone
+                    var availableBytes = 0L
+                    var totalBytes = 0L
+                    var icon: Int
+                    if (volume.isPrimary) {
+                        icon = R.drawable.ic_root_smartphone
+                        val statFs = StatFs(Environment.getExternalStorageDirectory().path)
+                        availableBytes = statFs.availableBytes
+                        totalBytes = statFs.totalBytes
                     } else {
-                        R.drawable.ic_sd_storage
+                        icon = R.drawable.ic_sd_storage
                     }
                     val item = StorageItem(icon = icon,
                             name = volume.getDescription(context),
                             volume = volume,
-                            availableBytes = 50,
-                            totalBytes = 100)
+                            availableBytes = availableBytes,
+                            totalBytes = totalBytes)
                     items.add(item)
                 }
             }

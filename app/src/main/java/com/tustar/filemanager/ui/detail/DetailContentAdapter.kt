@@ -12,7 +12,7 @@ import com.tustar.filemanager.model.DetailItem
 import com.tustar.filemanager.model.ImageItem
 import com.tustar.filemanager.utils.DateUtils
 import com.tustar.filemanager.utils.FileType
-import com.tustar.filemanager.utils.FileUtils
+import com.tustar.filemanager.utils.SizeUtils
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.util.Logger
@@ -78,7 +78,7 @@ class DetailContentAdapter(private val listener: OnItemClickListener<DetailItem>
                     } else {
                         context.getString(R.string.files_contains_files, item.length)
                     }
-                else -> FileUtils.getFileSize(item.length)
+                else -> SizeUtils.formatFileSize(item.length)
             }
 
             lastModified.text = DateUtils.millisToUTCDate(item.lastModified)
