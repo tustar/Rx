@@ -10,4 +10,11 @@ open class DetailItem {
     open val lastModified: Long = 0L
     open val length: Long = 0L
     open val uri: Uri? = null
+
+    fun getFileType() =
+            when {
+                name != null -> name?.substringAfterLast('.', "")
+                uri != null -> uri.toString().substringAfterLast('.', "")
+                else -> null
+            }
 }

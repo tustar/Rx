@@ -7,6 +7,8 @@ fun main() {
     println(Archive_4.joinToString(",", "(", ")") {
         "'$it'"
     })
+
+   println("adaf.apk".substringAfterLast('.', ""))
 }
 
 private fun dIsActive() {

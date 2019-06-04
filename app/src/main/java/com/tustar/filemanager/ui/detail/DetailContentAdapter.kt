@@ -11,6 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.tustar.filemanager.model.DetailItem
 import com.tustar.filemanager.model.ImageItem
 import com.tustar.filemanager.utils.DateUtils
+import com.tustar.filemanager.utils.FileType
 import com.tustar.filemanager.utils.FileUtils
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
@@ -53,12 +54,13 @@ class DetailContentAdapter(private val listener: OnItemClickListener<DetailItem>
 
         fun bind(item: DetailItem) {
             val context = itemView.context
-            if (item.isDirectory) {
-                icon.setImageResource(R.drawable.format_folder)
+            val drawable = FileType.getDrawable(context, item)
+            if (drawable != null) {
+                icon.setImageDrawable(drawable)
             } else {
                 Glide.with(context)
                         .applyDefaultRequestOptions(RequestOptions
-                                .placeholderOf(R.drawable.format_image)
+                                .placeholderOf(R.drawable.format_picture)
                                 .error(R.drawable.format_unkown))
                         .load(item.uri)
                         .into(icon)
