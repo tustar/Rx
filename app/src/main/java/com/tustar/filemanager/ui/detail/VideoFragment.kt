@@ -36,6 +36,11 @@ class VideoFragment : DetailFragment() {
         }
     }
 
+    override fun reload() {
+        super.reload()
+        viewModel.loadVideos()
+    }
+
     private fun initObservers() {
         viewModel.documents.observe(this, Observer { documents ->
             documents?.let { contentAdapter.setEntries(documents) }

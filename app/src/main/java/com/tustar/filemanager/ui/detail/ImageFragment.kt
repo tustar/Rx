@@ -38,6 +38,7 @@ class ImageFragment : DetailFragment() {
                     viewModel.loadImageByBucketId(item.bucketId!!)
                     currentNaviItem = DetailNaviItem(
                             name = item.bucketName!!,
+                            bucketId = item.bucketId,
                             uri = item.uri)
                     naviAdapter.pushNaviItem(currentNaviItem!!)
                 }
@@ -46,6 +47,17 @@ class ImageFragment : DetailFragment() {
                         FileUtils.openDocument(context, it)
                     }
                 }
+            }
+        }
+    }
+
+    override fun reload() {
+        super.reload()
+        currentNaviItem?.run {
+            if (bucketId == null) {
+                viewModel.loadImageBucket()
+            } else {
+                viewModel.loadImageByBucketId(bucketId)
             }
         }
     }

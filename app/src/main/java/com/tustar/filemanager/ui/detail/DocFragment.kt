@@ -37,6 +37,11 @@ class DocFragment : DetailFragment() {
         }
     }
 
+    override fun reload() {
+        super.reload()
+        viewModel.loadDocs()
+    }
+
     private fun initObservers() {
         viewModel.documents.observe(this, Observer { documents ->
             documents?.let { contentAdapter.setEntries(documents) }

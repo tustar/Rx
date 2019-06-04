@@ -6,6 +6,7 @@ import com.tustar.rxjava.R
 
 data class DetailNaviItem(val name: String,
                           val uri: Uri? = null,
+                          val bucketId: Long? = null,
                           val isHome: Boolean = false) {
 
     companion object {

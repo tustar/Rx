@@ -37,6 +37,11 @@ class ArchivesFragment : DetailFragment() {
         }
     }
 
+    override fun reload() {
+        super.reload()
+        viewModel.loadArchives()
+    }
+
     private fun initObservers() {
         viewModel.documents.observe(this, Observer { documents ->
             documents?.let { contentAdapter.setEntries(documents) }

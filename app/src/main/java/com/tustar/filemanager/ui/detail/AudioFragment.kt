@@ -37,6 +37,11 @@ class AudioFragment : DetailFragment() {
         }
     }
 
+    override fun reload() {
+        super.reload()
+        viewModel.loadAudios()
+    }
+
     private fun initObservers() {
         viewModel.documents.observe(this, Observer { documents ->
             documents?.let { contentAdapter.setEntries(documents) }
