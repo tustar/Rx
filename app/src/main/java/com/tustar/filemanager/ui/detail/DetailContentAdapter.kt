@@ -69,14 +69,14 @@ class DetailContentAdapter(private val listener: OnItemClickListener<DetailFileI
                 else -> item.name
             }
 
-            size.text = if (item.isDirectory) {
-                if (item.length == 1L) {
-                    context.getString(R.string.files_contains_file)
-                } else {
-                    context.getString(R.string.files_contains_files, item.length)
-                }
-            } else {
-                FileUtils.getFileSize(item.length)
+            size.text = when {
+                item.isDirectory || (item is ImageFileItem && item.isBucket) ->
+                    if (item.length == 1L) {
+                        context.getString(R.string.files_contains_file)
+                    } else {
+                        context.getString(R.string.files_contains_files, item.length)
+                    }
+                else -> FileUtils.getFileSize(item.length)
             }
 
             lastModified.text = DateUtils.millisToUTCDate(item.lastModified)

@@ -13,9 +13,7 @@ object DetailFactory {
             TYPE_ARCHIVES -> ArchivesFragment.newInstance()
             TYPE_STORAGE_PHONE, TYPE_STORAGE_SDCARD, TYPE_STORAGE_USB ->
                 VolumeFragment.newInstance(params)
-            else -> DetailFragment.newInstance()
+            else -> throw IllegalArgumentException("Unknown category type")
         }
     }
-
-
 }

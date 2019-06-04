@@ -14,7 +14,7 @@ import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.util.Logger
 import kotlinx.android.synthetic.main.fragment_detail.*
 
-open class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem>,
+abstract class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem>,
         DetailNaviAdapter.OnNaviItemClickListener {
 
     protected lateinit var contentAdapter: DetailContentAdapter
@@ -55,11 +55,13 @@ open class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem>,
     }
 
     fun onBackPressed(): Boolean {
-        if(naviAdapter.itemCount >= 2) {
+        if (naviAdapter.itemCount <= 2) {
             return true
         }
 
         naviAdapter.pop()
+        currentNaviItem = naviAdapter.naviEntries.last
+        reload()
         detail_navi_layout.scrollToPosition(naviAdapter.itemCount)
         return false
     }
@@ -82,12 +84,6 @@ open class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem>,
         }
     }
 
-    open fun initCurrentNaviItem() {}
-
-    open fun reload() {}
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = DetailFragment()
-    }
+    abstract fun initCurrentNaviItem()
+    abstract fun reload()
 }

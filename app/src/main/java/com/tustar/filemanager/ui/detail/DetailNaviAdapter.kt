@@ -13,7 +13,7 @@ import java.util.*
 class DetailNaviAdapter(private val listener: OnNaviItemClickListener)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val naviEntries = LinkedList<DetailNaviItem>()
+    var naviEntries = LinkedList<DetailNaviItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)

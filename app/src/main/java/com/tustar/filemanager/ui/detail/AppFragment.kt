@@ -26,7 +26,6 @@ class AppFragment : DetailFragment() {
     }
 
     override fun initCurrentNaviItem() {
-        super.initCurrentNaviItem()
         currentNaviItem = DetailNaviItem(getString(R.string.category_app))
     }
 
@@ -38,7 +37,6 @@ class AppFragment : DetailFragment() {
     }
 
     override fun reload() {
-        super.reload()
         viewModel.loadApps()
     }
 

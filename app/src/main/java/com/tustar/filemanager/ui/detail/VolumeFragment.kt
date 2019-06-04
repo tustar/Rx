@@ -30,7 +30,6 @@ class VolumeFragment : DetailFragment() {
     }
 
     override fun initCurrentNaviItem() {
-        super.initCurrentNaviItem()
         params.name?.let {
             currentNaviItem = DetailNaviItem(
                     name = it,
@@ -52,7 +51,6 @@ class VolumeFragment : DetailFragment() {
     }
 
     override fun reload() {
-        super.reload()
         currentNaviItem?.uri?.let {
             viewModel.loadDirectory(it)
         }

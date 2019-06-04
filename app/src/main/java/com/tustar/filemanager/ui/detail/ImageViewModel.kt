@@ -21,7 +21,7 @@ class ImageViewModel(application: Application) : AndroidViewModel(application) {
     fun loadImageBucket() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repo.queryImageBucketItems()
+                repo.queryImageBuckets()
             }.let {
                 _documents.postValue(it)
             }
@@ -31,7 +31,7 @@ class ImageViewModel(application: Application) : AndroidViewModel(application) {
     fun loadImageByBucketId(bucketId: Long) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                repo.queryImagesByeBucketId(bucketId)
+                repo.queryImagesByBucketId(bucketId)
             }.let {
                 _documents.postValue(it)
             }

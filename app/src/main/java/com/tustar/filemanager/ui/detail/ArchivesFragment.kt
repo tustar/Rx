@@ -26,7 +26,6 @@ class ArchivesFragment : DetailFragment() {
     }
 
     override fun initCurrentNaviItem() {
-        super.initCurrentNaviItem()
         currentNaviItem = DetailNaviItem(getString(R.string.category_archives))
     }
 
@@ -38,7 +37,6 @@ class ArchivesFragment : DetailFragment() {
     }
 
     override fun reload() {
-        super.reload()
         viewModel.loadArchives()
     }
 
