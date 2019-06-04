@@ -1,4 +1,4 @@
-package com.tustar.filemanager.ui.volume
+package com.tustar.filemanager.ui.storage
 
 import android.app.Activity
 import android.content.Intent
@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tustar.filemanager.annotation.TYPE_STORAGE_PHONE
 import com.tustar.filemanager.extension.uid
-import com.tustar.filemanager.model.VolumeItem
+import com.tustar.filemanager.model.StorageItem
 import com.tustar.filemanager.ui.detail.DetailActivity
 import com.tustar.filemanager.ui.detail.DetailParams
 import com.tustar.filemanager.utils.Constants.EXTERNAL_STORAGE_PROVIDER_AUTHORITY
@@ -23,26 +23,26 @@ import com.tustar.filemanager.utils.StorageUtils
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.util.Logger
-import kotlinx.android.synthetic.main.fragment_volume.*
+import kotlinx.android.synthetic.main.fragment_storage.*
 import org.jetbrains.anko.support.v4.toast
 
 
-class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
+class StorageFragment : Fragment(), OnItemClickListener<StorageItem> {
 
-    private lateinit var volumeAdapter: VolumeAdapter
-    private lateinit var viewModel: VolumeViewModel
-    private var volumeItem: VolumeItem? = null
+    private lateinit var storageAdapter: StorageAdapter
+    private lateinit var viewModel: StorageViewModel
+    private var storageItem: StorageItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
         }
-        viewModel = ViewModelProviders.of(this).get(VolumeViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(StorageViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_volume, container, false)
+        return inflater.inflate(R.layout.fragment_storage, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,16 +50,16 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
 
         initViews()
         initObservers()
-        viewModel.getVolumes()
+        viewModel.getStorages()
     }
 
     private fun initViews() {
-        volumeAdapter = VolumeAdapter()
+        storageAdapter = StorageAdapter()
         context?.let {
-            volumeAdapter.onItemClickListener = this
+            storageAdapter.onItemClickListener = this
             val linearLayoutManager = LinearLayoutManager(it)
             with(main_volume_recyclerView) {
-                adapter = volumeAdapter
+                adapter = storageAdapter
                 layoutManager = linearLayoutManager
 //                addItemDecoration(DividerItemDecoration(it, linearLayoutManager.orientation))
             }
@@ -67,13 +67,13 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
     }
 
     private fun initObservers() {
-        viewModel.volumes.observe(this, Observer {
-            volumeAdapter.items = it
+        viewModel.storages.observe(this, Observer {
+            storageAdapter.items = it
         })
     }
 
-    override fun onItemClick(item: VolumeItem) {
-        volumeItem = item
+    override fun onItemClick(item: StorageItem) {
+        storageItem = item
         val volume = item.volume
         val uuid = volume.uid()
 
@@ -106,7 +106,7 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
                 return
             }
 
-            if (!volumeItem!!.volume.uid().equals(uuid, ignoreCase = true)) {
+            if (!storageItem!!.volume.uid().equals(uuid, ignoreCase = true)) {
                 toast("授权目录不相符")
                 return
             }
@@ -140,7 +140,7 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
         DetailActivity.openVolumeDetail(context, DetailParams(
                 type = TYPE_STORAGE_PHONE,
                 directoryUri = volumeUri,
-                name = volumeItem!!.name))
+                name = storageItem!!.name))
     }
 
     companion object {
@@ -148,6 +148,6 @@ class VolumeFragment : Fragment(), OnItemClickListener<VolumeItem> {
         const val REQUEST_CODE_OPEN_DIRECTORY = 0xf11e
 
         @JvmStatic
-        fun newInstance() = VolumeFragment()
+        fun newInstance() = StorageFragment()
     }
 }

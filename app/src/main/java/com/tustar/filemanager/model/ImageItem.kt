@@ -5,9 +5,10 @@ import android.database.Cursor
 import android.os.Build
 import android.provider.BaseColumns
 import android.provider.MediaStore
+import com.tustar.rxjava.util.Logger
 
 
-class ImageFileItem : MediaFileItem() {
+class ImageItem : MediaItem() {
 
     var documentId: String? = null
     var originalDocumentId: String? = null
@@ -16,11 +17,11 @@ class ImageFileItem : MediaFileItem() {
     var isBucket: Boolean = false
 
     companion object {
-        fun toBucketList(cursor: Cursor): List<ImageFileItem> {
-            val items = mutableListOf<ImageFileItem>()
+        fun toBucketList(cursor: Cursor): List<ImageItem> {
+            val items = mutableListOf<ImageItem>()
             cursor.moveToFirst()
-            while (cursor.moveToNext()) {
-                val item = ImageFileItem()
+            do {
+                val item = ImageItem()
                 //
                 val count = cursor.getLong(cursor.getColumnIndex(
                         BaseColumns._COUNT))
@@ -47,18 +48,19 @@ class ImageFileItem : MediaFileItem() {
                 item.isBucket = true
 
                 items += item
-            }
+            } while (cursor.moveToNext())
             return items
         }
 
-        fun toList(cursor: Cursor): List<ImageFileItem> {
-            val items = mutableListOf<ImageFileItem>()
+        fun toList(cursor: Cursor): List<ImageItem> {
+            val items = mutableListOf<ImageItem>()
             cursor.moveToFirst()
-            while (cursor.moveToNext()) {
-                val item = ImageFileItem()
+            do {
+                val item = ImageItem()
                 //
                 val id = cursor.getLong(cursor.getColumnIndex(
                         MediaStore.Images.ImageColumns._ID))
+                Logger.d("id:$id")
                 val displayName = cursor.getString(cursor.getColumnIndex(
                         MediaStore.Images.ImageColumns.DISPLAY_NAME))
                 val mimeType = cursor.getString(cursor.getColumnIndex(
@@ -73,7 +75,7 @@ class ImageFileItem : MediaFileItem() {
                 item.lastModified = dateModified
                 item.length = size
                 item.uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
-                item.isBucket = true
+                item.isBucket = false
 
                 // Android Q
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -92,7 +94,7 @@ class ImageFileItem : MediaFileItem() {
                 }
 
                 items += item
-            }
+            } while (cursor.moveToNext())
             return items
         }
     }

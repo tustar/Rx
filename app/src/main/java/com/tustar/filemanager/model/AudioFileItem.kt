@@ -2,11 +2,10 @@ package com.tustar.filemanager.model
 
 import android.content.ContentUris
 import android.database.Cursor
-import android.net.Uri
 import android.provider.MediaStore
 
 
-class AudioFileItem : MediaFileItem() {
+class AudioFileItem : MediaItem() {
     companion object {
         fun toList(cursor: Cursor): List<AudioFileItem> {
             val items = mutableListOf<AudioFileItem>()

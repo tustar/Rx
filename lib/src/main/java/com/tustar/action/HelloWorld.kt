@@ -3,14 +3,10 @@ package com.tustar.action
 import kotlinx.coroutines.*
 
 fun main() {
-    var result ="Hello".apply {
-
-        println("$this World ---")
-
-        "$this World"
-    }
-
-    println(result)
+    val Archive_4 = arrayListOf(".zip", ".rar")
+    println(Archive_4.joinToString(",", "(", ")") {
+        "'$it'"
+    })
 }
 
 private fun dIsActive() {

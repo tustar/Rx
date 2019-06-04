@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.tustar.filemanager.model.DetailFileItem
-import com.tustar.filemanager.model.ImageFileItem
+import com.tustar.filemanager.model.DetailItem
+import com.tustar.filemanager.model.ImageItem
 import com.tustar.filemanager.utils.DateUtils
 import com.tustar.filemanager.utils.FileUtils
 import com.tustar.rxjava.R
@@ -17,10 +17,10 @@ import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.util.Logger
 import kotlinx.android.synthetic.main.item_detail_content.view.*
 
-class DetailContentAdapter(private val listener: OnItemClickListener<DetailFileItem>)
+class DetailContentAdapter(private val listener: OnItemClickListener<DetailItem>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val directoryEntries = mutableListOf<DetailFileItem>()
+    private val directoryEntries = mutableListOf<DetailItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -34,7 +34,7 @@ class DetailContentAdapter(private val listener: OnItemClickListener<DetailFileI
         }
     }
 
-    fun setEntries(newList: List<DetailFileItem>) {
+    fun setEntries(newList: List<DetailItem>) {
         synchronized(directoryEntries) {
             directoryEntries.clear()
             directoryEntries.addAll(newList)
@@ -51,7 +51,7 @@ class DetailContentAdapter(private val listener: OnItemClickListener<DetailFileI
         private val lastModified: TextView = itemView.file_lastModified
         private val arrow: ImageView = itemView.file_arrow
 
-        fun bind(item: DetailFileItem) {
+        fun bind(item: DetailItem) {
             val context = itemView.context
             if (item.isDirectory) {
                 icon.setImageResource(R.drawable.format_folder)
@@ -65,12 +65,12 @@ class DetailContentAdapter(private val listener: OnItemClickListener<DetailFileI
             }
 
             name.text = when {
-                item is ImageFileItem && item.isBucket -> item.bucketName
+                item is ImageItem && item.isBucket -> item.bucketName
                 else -> item.name
             }
 
             size.text = when {
-                item.isDirectory || (item is ImageFileItem && item.isBucket) ->
+                item.isDirectory || (item is ImageItem && item.isBucket) ->
                     if (item.length == 1L) {
                         context.getString(R.string.files_contains_file)
                     } else {
@@ -92,7 +92,7 @@ class DetailContentAdapter(private val listener: OnItemClickListener<DetailFileI
             }
 
 
-            if (item is ImageFileItem) {
+            if (item is ImageItem) {
                 Logger.d("documentId:${item.documentId}\n" +
                         "originalDocumentId:${item.originalDocumentId}\n" +
                         "ownerPackageName:${item.ownerPackageName}\n" +

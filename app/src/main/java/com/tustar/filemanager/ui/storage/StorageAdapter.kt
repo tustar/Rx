@@ -1,4 +1,4 @@
-package com.tustar.filemanager.ui.volume
+package com.tustar.filemanager.ui.storage
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,16 +7,15 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.tustar.filemanager.model.CategoryItem
-import com.tustar.filemanager.model.VolumeItem
+import com.tustar.filemanager.model.StorageItem
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import org.jetbrains.anko.find
 
-class VolumeAdapter : RecyclerView.Adapter<VolumeAdapter.ViewHolder>() {
+class StorageAdapter : RecyclerView.Adapter<StorageAdapter.ViewHolder>() {
 
-    var onItemClickListener: OnItemClickListener<VolumeItem>? = null
-    var items: List<VolumeItem> = mutableListOf()
+    var onItemClickListener: OnItemClickListener<StorageItem>? = null
+    var items: List<StorageItem> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -41,7 +40,7 @@ class VolumeAdapter : RecyclerView.Adapter<VolumeAdapter.ViewHolder>() {
         private val progressBar: ProgressBar = itemView.find(R.id.storage_progress)
         private val arrow: ImageView = itemView.find(R.id.storage_arrow)
 
-        fun bindItem(item: VolumeItem) {
+        fun bindItem(item: StorageItem) {
             icon.setImageResource(item.icon)
             name.text = item.name
             val progress = if (item.totalBytes == 0L) {

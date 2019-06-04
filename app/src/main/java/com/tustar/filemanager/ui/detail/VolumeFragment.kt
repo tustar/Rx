@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.tustar.filemanager.model.DetailFileItem
+import com.tustar.filemanager.model.DetailItem
 import com.tustar.filemanager.model.DetailNaviItem
 import com.tustar.filemanager.ui.detail.DetailActivity.Companion.ARG_DETAIL_PARAMS
 import com.tustar.filemanager.utils.FileUtils
@@ -37,7 +37,7 @@ class VolumeFragment : DetailFragment() {
         }
     }
 
-    override fun onItemClick(item: DetailFileItem) {
+    override fun onItemClick(item: DetailItem) {
         super.onItemClick(item)
         if (item.isDirectory) {
             viewModel.loadDirectory(item.uri!!)

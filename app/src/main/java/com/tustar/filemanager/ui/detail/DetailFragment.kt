@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.tustar.filemanager.model.DetailFileItem
+import com.tustar.filemanager.model.DetailItem
 import com.tustar.filemanager.model.DetailNaviItem
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.util.Logger
 import kotlinx.android.synthetic.main.fragment_detail.*
 
-abstract class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem>,
+abstract class DetailFragment : Fragment(), OnItemClickListener<DetailItem>,
         DetailNaviAdapter.OnNaviItemClickListener {
 
     protected lateinit var contentAdapter: DetailContentAdapter
@@ -38,7 +38,7 @@ abstract class DetailFragment : Fragment(), OnItemClickListener<DetailFileItem>,
         }
     }
 
-    override fun onItemClick(item: DetailFileItem) {
+    override fun onItemClick(item: DetailItem) {
 
     }
 

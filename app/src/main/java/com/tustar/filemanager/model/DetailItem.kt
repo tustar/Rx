@@ -2,7 +2,7 @@ package com.tustar.filemanager.model
 
 import android.net.Uri
 
-open class DetailFileItem {
+open class DetailItem {
     open val name: String? = null
     open val type: String? = null
     open val isDirectory: Boolean = false

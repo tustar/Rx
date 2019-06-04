@@ -6,8 +6,6 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.tustar.filemanager.LiveEvent
-import com.tustar.filemanager.model.DetailFileItem
 import com.tustar.filemanager.model.VolumeFileItem
 import com.tustar.filemanager.model.toList
 import com.tustar.rxjava.util.Logger

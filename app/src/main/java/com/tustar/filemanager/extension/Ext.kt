@@ -8,3 +8,7 @@ fun StorageVolume.uid(): String? =
         } else {
             uuid
         }
+
+fun <T> Iterable<T>.sql() = joinToString(",", "(", ")") {
+    "'$it'"
+}

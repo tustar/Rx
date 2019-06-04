@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.Uri
-import com.tustar.filemanager.model.DetailFileItem
+import com.tustar.filemanager.model.DetailItem
 import com.tustar.rxjava.R
 import org.jetbrains.anko.longToast
 import java.text.DecimalFormat
@@ -52,7 +52,7 @@ object FileUtils {
         }
     }
 
-    fun openDocument(context: Context?, document: DetailFileItem) {
+    fun openDocument(context: Context?, document: DetailItem) {
         context ?: return
         try {
             val openIntent = Intent(Intent.ACTION_VIEW).apply {

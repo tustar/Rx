@@ -2,17 +2,16 @@ package com.tustar.filemanager.model
 
 import android.content.ContentUris
 import android.database.Cursor
-import android.net.Uri
 import android.provider.MediaStore
 
 
-class VideoFileItem : MediaFileItem() {
+class VideoItem : MediaItem() {
     companion object {
-        fun toList(cursor: Cursor): List<VideoFileItem> {
-            val items = mutableListOf<VideoFileItem>()
+        fun toList(cursor: Cursor): List<VideoItem> {
+            val items = mutableListOf<VideoItem>()
             cursor.moveToFirst()
-            while (cursor.moveToNext()) {
-                val item = VideoFileItem()
+            do {
+                val item = VideoItem()
                 //
                 val id = cursor.getLong(cursor.getColumnIndex(
                         MediaStore.Video.VideoColumns._ID))
@@ -31,7 +30,8 @@ class VideoFileItem : MediaFileItem() {
                 item.length = size
                 item.uri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id)
                 items += item
-            }
+            } while (cursor.moveToNext())
+
             return items
         }
     }

@@ -5,16 +5,23 @@ import android.content.Context
 import android.os.Build
 import android.provider.BaseColumns
 import android.provider.MediaStore
+import com.tustar.filemanager.extension.sql
 import com.tustar.filemanager.model.AudioFileItem
-import com.tustar.filemanager.model.ImageFileItem
-import com.tustar.filemanager.model.VideoFileItem
+import com.tustar.filemanager.model.ImageItem
+import com.tustar.filemanager.model.MediaItem
+import com.tustar.filemanager.model.VideoItem
+import com.tustar.filemanager.utils.FileType.APP_4
+import com.tustar.filemanager.utils.FileType.ARCHIVE_3
+import com.tustar.filemanager.utils.FileType.ARCHIVE_4
+import com.tustar.filemanager.utils.FileType.DOC_4
+import com.tustar.filemanager.utils.FileType.DOC_5
 
 class MediaStoreRepository(val context: Context) {
 
     private val resolver = context.applicationContext.contentResolver
 
     fun queryImageBucketCount(): Int? {
-        val projection = arrayOf(MediaStore.Images.ImageColumns._ID)
+        val projection = arrayOf(BaseColumns._ID)
         val selection = "0=0) GROUP BY (${MediaStore.Images.ImageColumns.BUCKET_ID}"
         resolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 projection,
@@ -26,10 +33,10 @@ class MediaStoreRepository(val context: Context) {
                 }
     }
 
-    fun queryImageBuckets(): List<ImageFileItem> {
+    fun queryImageBuckets(): List<ImageItem> {
         val projection = arrayOf(
                 COLUMN_COUNT,
-                MediaStore.Images.ImageColumns._ID,
+                BaseColumns._ID,
                 MediaStore.Images.ImageColumns.BUCKET_ID,
                 MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
                 MediaStore.Images.ImageColumns.DISPLAY_NAME,
@@ -44,17 +51,17 @@ class MediaStoreRepository(val context: Context) {
                 null)
                 .use { cursor ->
                     cursor?.let {
-                        return ImageFileItem.toBucketList(cursor)
+                        return ImageItem.toBucketList(cursor)
                     }
                 }
         return emptyList()
     }
 
     @SuppressLint("InlinedApi")
-    fun queryImagesByBucketId(bucketId: Long): List<ImageFileItem> {
+    fun queryImagesByBucketId(bucketId: Long): List<ImageItem> {
         val projection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             arrayOf(
-                    MediaStore.Images.ImageColumns._ID,
+                    BaseColumns._ID,
                     MediaStore.Images.ImageColumns.DISPLAY_NAME,
                     MediaStore.Images.ImageColumns.MIME_TYPE,
                     MediaStore.Images.ImageColumns.DATE_MODIFIED,
@@ -67,7 +74,7 @@ class MediaStoreRepository(val context: Context) {
             )
         } else {
             arrayOf(
-                    MediaStore.Images.ImageColumns._ID,
+                    BaseColumns._ID,
                     MediaStore.Images.ImageColumns.DISPLAY_NAME,
                     MediaStore.Images.ImageColumns.MIME_TYPE,
                     MediaStore.Images.ImageColumns.DATE_MODIFIED,
@@ -81,14 +88,14 @@ class MediaStoreRepository(val context: Context) {
                 null)
                 .use { cursor ->
                     cursor?.let {
-                        return ImageFileItem.toList(cursor)
+                        return ImageItem.toList(cursor)
                     }
                 }
         return emptyList()
     }
 
     fun queryAudioCount(): Int? {
-        val projection = arrayOf("COUNT(${MediaStore.Audio.AudioColumns._ID})")
+        val projection = arrayOf("COUNT(${BaseColumns._ID})")
         resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 projection,
                 null,
@@ -102,16 +109,15 @@ class MediaStoreRepository(val context: Context) {
 
     fun queryAudios(): List<AudioFileItem> {
         val projection = arrayOf(
-                MediaStore.Audio.AudioColumns._ID,
+                BaseColumns._ID,
                 MediaStore.Audio.AudioColumns.DISPLAY_NAME,
                 MediaStore.Audio.AudioColumns.MIME_TYPE,
                 MediaStore.Audio.AudioColumns.DATE_MODIFIED,
                 MediaStore.Audio.AudioColumns.SIZE
         )
-        val selection = "0=0"
         resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 projection,
-                selection,
+                null,
                 null,
                 null)
                 .use { cursor ->
@@ -123,7 +129,7 @@ class MediaStoreRepository(val context: Context) {
     }
 
     fun queryVideoCount(): Int? {
-        val projection = arrayOf("COUNT(${MediaStore.Video.VideoColumns._ID})")
+        val projection = arrayOf("COUNT(${BaseColumns._ID})")
         resolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                 projection,
                 null,
@@ -135,7 +141,7 @@ class MediaStoreRepository(val context: Context) {
                 }
     }
 
-    fun queryVideos(): List<VideoFileItem> {
+    fun queryVideos(): List<VideoItem> {
         val projection = arrayOf(
                 BaseColumns._ID,
                 MediaStore.Video.VideoColumns.DISPLAY_NAME,
@@ -143,19 +149,128 @@ class MediaStoreRepository(val context: Context) {
                 MediaStore.Video.VideoColumns.DATE_MODIFIED,
                 MediaStore.Video.VideoColumns.SIZE
         )
-        val selection = "0=0"
         resolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                projection,
+                null,
+                null,
+                null)
+                .use { cursor ->
+                    cursor?.let {
+                        return VideoItem.toList(cursor)
+                    }
+                }
+        return emptyList()
+    }
+
+    fun queryDocCount(): Int? {
+        val projection = arrayOf("COUNT(${BaseColumns._ID})")
+        val selection = getDocWhere()
+        resolver.query(MediaStore.Files.getContentUri("external"),
+                projection,
+                selection,
+                null,
+                null)
+                .use { cursor ->
+                    cursor?.moveToFirst()
+                    return cursor?.getInt(0)
+                }
+    }
+
+    fun queryDocs(): List<MediaItem> {
+        val projection = arrayOf(
+                BaseColumns._ID,
+                MediaStore.Files.FileColumns.DISPLAY_NAME,
+                MediaStore.Files.FileColumns.MIME_TYPE,
+                MediaStore.Files.FileColumns.DATE_MODIFIED,
+                MediaStore.Files.FileColumns.SIZE
+        )
+        val selection = getDocWhere()
+        resolver.query(MediaStore.Files.getContentUri("external"),
                 projection,
                 selection,
                 null,
                 null)
                 .use { cursor ->
                     cursor?.let {
-                        return VideoFileItem.toList(cursor)
+                        return MediaItem.toList(cursor)
                     }
                 }
         return emptyList()
     }
+
+    fun queryAppCount(): Int? {
+        val projection = arrayOf("COUNT(${BaseColumns._ID})")
+        val selection = getAppWhere()
+        resolver.query(MediaStore.Files.getContentUri("external"),
+                projection,
+                selection,
+                null,
+                null)
+                .use { cursor ->
+                    cursor?.moveToFirst()
+                    return cursor?.getInt(0)
+                }
+    }
+
+    fun queryApps(): List<MediaItem> {
+        val projection = arrayOf(
+                BaseColumns._ID,
+                MediaStore.Files.FileColumns.DISPLAY_NAME,
+                MediaStore.Files.FileColumns.MIME_TYPE,
+                MediaStore.Files.FileColumns.DATE_MODIFIED,
+                MediaStore.Files.FileColumns.SIZE
+        )
+        val selection = getAppWhere()
+        resolver.query(MediaStore.Files.getContentUri("external"),
+                projection,
+                selection,
+                null,
+                null)
+                .use { cursor ->
+                    cursor?.let {
+                        return MediaItem.toList(cursor)
+                    }
+                }
+        return emptyList()
+    }
+
+    //
+    fun queryArchivesCount(): Int? {
+        val projection = arrayOf("COUNT(${BaseColumns._ID})")
+        val selection = getArchiveWhere()
+        resolver.query(MediaStore.Files.getContentUri("external"),
+                projection,
+                selection,
+                null,
+                null)
+                .use { cursor ->
+                    cursor?.moveToFirst()
+                    return cursor?.getInt(0)
+                }
+    }
+
+    fun queryArchives(): List<MediaItem> {
+        val projection = arrayOf(
+                BaseColumns._ID,
+                MediaStore.Files.FileColumns.DISPLAY_NAME,
+                MediaStore.Files.FileColumns.MIME_TYPE,
+                MediaStore.Files.FileColumns.DATE_MODIFIED,
+                MediaStore.Files.FileColumns.SIZE
+        )
+        val selection = getArchiveWhere()
+        resolver.query(MediaStore.Files.getContentUri("external"),
+                projection,
+                selection,
+                null,
+                null)
+                .use { cursor ->
+                    cursor?.let {
+                        return MediaItem.toList(cursor)
+                    }
+                }
+        return emptyList()
+    }
+
 
     companion object {
 
@@ -167,6 +282,41 @@ class MediaStoreRepository(val context: Context) {
                 INSTANCE ?: synchronized(MediaStoreRepository::class.java) {
                     INSTANCE ?: MediaStoreRepository(context).also { INSTANCE = it }
                 }
+
+        fun getDocWhere(): String {
+            return StringBuilder().run {
+                append("(lower(substr(${MediaStore.MediaColumns.DISPLAY_NAME}, -4)) in ")
+                append(DOC_4.sql())
+                append(")")
+                append(" or ")
+                append("(lower(substr(${MediaStore.MediaColumns.DISPLAY_NAME}, -5)) in ")
+                append(DOC_5.sql())
+                append(")")
+                toString()
+            }
+        }
+
+        fun getAppWhere(): String {
+            return StringBuilder().run {
+                append("(lower(substr(${MediaStore.MediaColumns.DISPLAY_NAME}, -4)) in (")
+                append(APP_4.sql())
+                append("))")
+                toString()
+            }
+        }
+
+        fun getArchiveWhere(): String {
+            return StringBuilder().run {
+                append("(lower(substr(${MediaStore.MediaColumns.DISPLAY_NAME}, -3)) in ")
+                append(ARCHIVE_3.sql())
+                append(")")
+                append(" or ")
+                append("(lower(substr(${MediaStore.MediaColumns.DISPLAY_NAME}, -4)) in ")
+                append(ARCHIVE_4.sql())
+                append(")")
+                toString()
+            }
+        }
 
         @JvmStatic
         fun destroyInstance() {

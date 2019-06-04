@@ -65,6 +65,18 @@ class CategoryFragment : Fragment(), OnItemClickListener<CategoryItem> {
             categoryAdapter.items[INDEX_VIDEO].count = it
             categoryAdapter.notifyDataSetChanged()
         })
+        viewModel.docCount.observe(this, Observer {
+            categoryAdapter.items[INDEX_DOC].count = it
+            categoryAdapter.notifyDataSetChanged()
+        })
+        viewModel.appCount.observe(this, Observer {
+            categoryAdapter.items[INDEX_APP].count = it
+            categoryAdapter.notifyDataSetChanged()
+        })
+        viewModel.archivesCount.observe(this, Observer {
+            categoryAdapter.items[INDEX_ARCHIVES].count = it
+            categoryAdapter.notifyDataSetChanged()
+        })
     }
 
     private fun loadData() {
@@ -72,6 +84,9 @@ class CategoryFragment : Fragment(), OnItemClickListener<CategoryItem> {
         viewModel.loadImageBucketCount()
         viewModel.loadAudioCount()
         viewModel.loadVideoCount()
+        viewModel.loadDocCount()
+        viewModel.loadAppCount()
+        viewModel.loadArchivesCount()
     }
 
     override fun onItemClick(item: CategoryItem) {

@@ -31,6 +31,18 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
     val videoCount: LiveData<Int>
         get() = _videoCount
 
+    private val _docCount = MutableLiveData<Int>()
+    val docCount: LiveData<Int>
+        get() = _docCount
+
+    private val _appCount = MutableLiveData<Int>()
+    val appCount: LiveData<Int>
+        get() = _appCount
+
+    private val _archivesCount = MutableLiveData<Int>()
+    val archivesCount: LiveData<Int>
+        get() = _archivesCount
+
     fun loadCategories() {
         _categories.postValue(CategoryItem.getCategoryItems())
     }
@@ -61,6 +73,36 @@ class CategoryViewModel(application: Application) : AndroidViewModel(application
                 repo.queryVideoCount()
             }?.let {
                 _videoCount.postValue(it)
+            }
+        }
+    }
+
+    fun loadDocCount() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repo.queryDocCount()
+            }?.let {
+                _docCount.postValue(it)
+            }
+        }
+    }
+
+    fun loadAppCount() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repo.queryAppCount()
+            }?.let {
+                _appCount.postValue(it)
+            }
+        }
+    }
+
+    fun loadArchivesCount() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                repo.queryArchivesCount()
+            }?.let {
+                _archivesCount.postValue(it)
             }
         }
     }
