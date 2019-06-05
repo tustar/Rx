@@ -1,5 +1,6 @@
 package com.tustar.filemanager.ui.storage
 
+import android.text.format.Formatter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tustar.filemanager.model.StorageItem
-import com.tustar.filemanager.utils.SizeUtils
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import org.jetbrains.anko.find
@@ -17,10 +17,6 @@ class StorageAdapter : RecyclerView.Adapter<StorageAdapter.ViewHolder>() {
 
     var onItemClickListener: OnItemClickListener<StorageItem>? = null
     var items: List<StorageItem> = mutableListOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     override fun getItemCount(): Int = items?.size
 
@@ -46,7 +42,7 @@ class StorageAdapter : RecyclerView.Adapter<StorageAdapter.ViewHolder>() {
             icon.setImageResource(item.icon)
             name.text = itemView.context.getString(R.string.storage_name, item.name)
             available.text = itemView.context.getString(R.string.storage_available,
-                    SizeUtils.formatFileSize(item.availableBytes))
+                    Formatter.formatFileSize(itemView.context, item.availableBytes))
             val progress = if (item.totalBytes == 0L) {
                 0
             } else {

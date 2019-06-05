@@ -21,6 +21,7 @@ open class BaseStorageFragment : Fragment() {
     }
     private val mOtgReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
+            Logger.i("action:${intent.action}")
             if (intent.action == ACTION_VOLUME_STATE_CHANGED) {
                 when (val state = intent.getIntExtra(EXTRA_VOLUME_STATE, STATE_UNMOUNTED)) {
                     STATE_UNMOUNTED -> Logger.d(" STATE_UNMOUNTED: $state")
@@ -88,7 +89,7 @@ open class BaseStorageFragment : Fragment() {
     }
 
     open fun onStorageStateChanged() {
-
+        Logger.i()
     }
 
     companion object {

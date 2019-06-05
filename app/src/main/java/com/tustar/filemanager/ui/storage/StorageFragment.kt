@@ -19,7 +19,7 @@ import com.tustar.filemanager.model.StorageItem
 import com.tustar.filemanager.ui.detail.DetailActivity
 import com.tustar.filemanager.ui.detail.DetailParams
 import com.tustar.filemanager.utils.Constants.EXTERNAL_STORAGE_PROVIDER_AUTHORITY
-import com.tustar.filemanager.utils.StorageUtils
+import com.tustar.filemanager.utils.PrefUtils
 import com.tustar.rxjava.R
 import com.tustar.rxjava.base.OnItemClickListener
 import com.tustar.rxjava.util.Logger
@@ -68,7 +68,9 @@ class StorageFragment : BaseStorageFragment(), OnItemClickListener<StorageItem> 
 
     private fun initObservers() {
         viewModel.storages.observe(this, Observer {
+            Logger.i("$it")
             storageAdapter.items = it
+            storageAdapter.notifyDataSetChanged()
         })
     }
 
@@ -79,7 +81,7 @@ class StorageFragment : BaseStorageFragment(), OnItemClickListener<StorageItem> 
 
         context?.let { context ->
             if (uuid != null) {
-                val volumeUri = StorageUtils.getUuidUri(context, uuid)?.toUri()
+                val volumeUri = PrefUtils.getUuidUri(context, uuid)?.toUri()
                 if (volumeUri == null) {
                     openDirectory(uuid)
                 } else {
@@ -116,7 +118,7 @@ class StorageFragment : BaseStorageFragment(), OnItemClickListener<StorageItem> 
                     volumeUri,
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
             )
-            StorageUtils.saveUuidUri(context!!, uuid!!, volumeUri)
+            PrefUtils.saveUuidUri(context!!, uuid!!, volumeUri)
 
             // Navigation
             openVolumeDetail(volumeUri)
@@ -145,6 +147,7 @@ class StorageFragment : BaseStorageFragment(), OnItemClickListener<StorageItem> 
 
     override fun onStorageStateChanged() {
         super.onStorageStateChanged()
+        Logger.i()
         viewModel.getStorages()
     }
 
