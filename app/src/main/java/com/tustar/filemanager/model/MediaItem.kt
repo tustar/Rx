@@ -15,6 +15,7 @@ open class MediaItem : DetailItem() {
     override var lastModified = 0L
     override var length: Long = 0L
     override var uri: Uri? = null
+    override val isMediaFile = true
 
     var bucketId: Long? = null
     var bucketName: String? = null

@@ -11,6 +11,7 @@ open class DetailItem {
     open val length: Long = 0L
     open val uri: Uri? = null
     var isChecked: Boolean = false
+    open val isMediaFile: Boolean = false
 
     fun getFileType() =
             when {

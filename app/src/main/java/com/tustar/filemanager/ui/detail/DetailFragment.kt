@@ -140,7 +140,10 @@ abstract class DetailFragment : BaseStorageFragment(), OnItemClickListener<Detai
 
     protected fun initToolbar() {
         toolbar_item_delete.setOnClickListener {
-
+            FileUtils.delete(context, checkedItems) {
+                reload()
+                isInEditModel = false
+            }
         }
 
         toolbar_item_copy.setOnClickListener {
@@ -153,6 +156,10 @@ abstract class DetailFragment : BaseStorageFragment(), OnItemClickListener<Detai
 
         toolbar_item_share.setOnClickListener {
             FileUtils.share(context, checkedItems)
+        }
+
+        toolbar_item_detail.setOnClickListener {
+            FileUtils.showDetail(context, checkedItems)
         }
     }
 

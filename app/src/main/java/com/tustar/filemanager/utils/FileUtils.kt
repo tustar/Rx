@@ -1,11 +1,15 @@
 package com.tustar.filemanager.utils
 
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import androidx.documentfile.provider.DocumentFile
 import com.tustar.filemanager.model.DetailItem
 import com.tustar.rxjava.R
 import com.tustar.rxjava.util.Logger
@@ -120,6 +124,66 @@ object FileUtils {
             e.printStackTrace()
             context.longToast(R.string.no_share_activity)
         }
+    }
+
+
+    fun delete(context: Context?, items: List<DetailItem>, block: () -> Unit) {
+        if (context == null) {
+            return
+        }
+
+        if (items.isNullOrEmpty()) {
+            return
+        }
+
+        var preDeleteResult = true
+        items.forEachIndexed { index, item ->
+            item.uri?.let {
+                val uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                        && item.isMediaFile) {
+                    MediaStore.getDocumentUri(context, it)
+                } else {
+                    it
+                }
+                val file = DocumentFile.fromTreeUri(context, uri)
+                var itemResult = file?.delete() ?: false
+                // 中途删除失败，刷新文件，并中止
+                if (index > 0 && preDeleteResult && !itemResult) {
+                    block()
+                    return
+                }
+                // 合并删除结果
+                preDeleteResult = preDeleteResult && itemResult
+            }
+        }
+
+        block()
+    }
+
+    fun showDetail(context: Context?, items: List<DetailItem>) {
+        if (context == null) {
+            return
+        }
+
+        if (items.isNullOrEmpty() || items.size != 1) {
+            return
+        }
+
+        val item = items[0]
+        val build = AlertDialog.Builder(context)
+                .setTitle(item.name)
+                .setMessage("${context.getString(R.string.file_path)}${item.uri}\n" +
+                        "${context.getString(R.string.file_type)}${item.getFileType()}\n" +
+                        "${context.getString(R.string.file_lastModified)}${DateUtils.millisToUTCDate(item.lastModified)}")
+                .setCancelable(true)
+                .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .setOnCancelListener {
+                    it.dismiss()
+                }
+        build.create().show()
+
     }
 
     @JvmStatic
