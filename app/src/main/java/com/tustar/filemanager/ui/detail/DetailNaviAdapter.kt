@@ -14,6 +14,7 @@ class DetailNaviAdapter(private val listener: OnNaviItemClickListener)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var naviEntries = LinkedList<DetailNaviItem>()
+    var isInEditModel: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -54,6 +55,8 @@ class DetailNaviAdapter(private val listener: OnNaviItemClickListener)
             itemView.setOnClickListener {
                 listener?.onNaviItemClick(item)
             }
+
+            itemView.isEnabled = !isInEditModel
         }
     }
 

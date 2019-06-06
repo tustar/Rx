@@ -112,7 +112,9 @@
     <string name="category_app">安装包</string>
     <string name="category_archives">压缩包</string>
 
-    <string name="error_no_activity">No activity found to open "%1$s".</string>
+    <string name="only_support_file">分享只支持文件</string>
+    <string name="no_share_activity">没有支持分享该类型的应用</string>
+    <string name="no_open_activity">没有支持打开"%1$s"文件的应用</string>
 
     <string name="navi_home">首页</string>
 </resources>

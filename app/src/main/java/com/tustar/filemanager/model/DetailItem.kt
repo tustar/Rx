@@ -10,6 +10,7 @@ open class DetailItem {
     open val lastModified: Long = 0L
     open val length: Long = 0L
     open val uri: Uri? = null
+    var isChecked: Boolean = false
 
     fun getFileType() =
             when {

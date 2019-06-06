@@ -8,7 +8,9 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import com.tustar.filemanager.model.DetailItem
 import com.tustar.rxjava.R
+import com.tustar.rxjava.util.Logger
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.toast
 
 
 object FileUtils {
@@ -51,7 +53,7 @@ object FileUtils {
             }
             context.startActivity(openIntent)
         } catch (ex: ActivityNotFoundException) {
-            context.longToast(context.resources.getString(R.string.error_no_activity, document.name))
+            context.longToast(context.resources.getString(R.string.no_open_activity, document.name))
         }
     }
 
@@ -64,7 +66,65 @@ object FileUtils {
             }
             context.startActivity(openIntent)
         } catch (ex: ActivityNotFoundException) {
-            context.longToast(context.resources.getString(R.string.error_no_activity, uri))
+            context.longToast(context.resources.getString(R.string.no_open_activity, uri))
         }
+    }
+
+    fun share(context: Context?, items: List<DetailItem>) {
+        if (context == null) {
+            return
+        }
+
+        if (items.isNullOrEmpty()) {
+            return
+        }
+
+        var intent: Intent
+        var mimeType = "*/*"
+        if (items.size == 1) {
+            val item = items[0]
+            if (item.isDirectory) {
+                context.toast(R.string.only_support_file)
+                return
+            }
+            intent = Intent(Intent.ACTION_SEND).apply {
+                putExtra(Intent.EXTRA_STREAM, item.uri)
+            }
+            mimeType = getMimeType(item)
+        } else {
+            intent = Intent(Intent.ACTION_SEND_MULTIPLE)
+            val uris = arrayListOf<Uri>()
+            items.forEach {
+                if (it.isDirectory) {
+                    context.toast(R.string.only_support_file)
+                    return
+                }
+                it.uri?.let { uri ->
+                    uris.add(uri)
+                }
+                mimeType = getMimeType(it)
+            }
+            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
+        }
+
+        Logger.d("mimeType:$mimeType")
+        intent.apply {
+            flags = Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            type = mimeType
+            putExtra("supportMultipleTheme", true)
+        }
+        try {
+            val shareIntent = Intent.createChooser(intent, "Share")
+            context.startActivity(shareIntent)
+        } catch (e: RuntimeException) {
+            e.printStackTrace()
+            context.toast(R.string.no_share_activity)
+        }
+    }
+
+
+    fun getMimeType(item: DetailItem): String {
+        val fileType = item.getFileType()
+        return FileType.MIME_TYPES[fileType] ?: "*/*"
     }
 }
