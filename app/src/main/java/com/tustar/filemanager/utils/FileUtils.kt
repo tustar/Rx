@@ -10,7 +10,6 @@ import com.tustar.filemanager.model.DetailItem
 import com.tustar.rxjava.R
 import com.tustar.rxjava.util.Logger
 import org.jetbrains.anko.longToast
-import org.jetbrains.anko.toast
 
 
 object FileUtils {
@@ -44,16 +43,17 @@ object FileUtils {
         }
     }
 
-    fun openDocument(context: Context?, document: DetailItem) {
+    fun openDocument(context: Context?, item: DetailItem) {
         context ?: return
         try {
             val openIntent = Intent(Intent.ACTION_VIEW).apply {
                 flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                data = document.uri
+                data = item.uri
+                type = getMimeType(item)
             }
             context.startActivity(openIntent)
         } catch (ex: ActivityNotFoundException) {
-            context.longToast(context.resources.getString(R.string.no_open_activity, document.name))
+            context.longToast(context.resources.getString(R.string.no_open_activity, item.name))
         }
     }
 
@@ -84,7 +84,7 @@ object FileUtils {
         if (items.size == 1) {
             val item = items[0]
             if (item.isDirectory) {
-                context.toast(R.string.only_support_file)
+                context.longToast(R.string.share_no_support_folder)
                 return
             }
             intent = Intent(Intent.ACTION_SEND).apply {
@@ -96,7 +96,7 @@ object FileUtils {
             val uris = arrayListOf<Uri>()
             items.forEach {
                 if (it.isDirectory) {
-                    context.toast(R.string.only_support_file)
+                    context.longToast(R.string.share_no_support_folder)
                     return
                 }
                 it.uri?.let { uri ->
@@ -114,15 +114,15 @@ object FileUtils {
             putExtra("supportMultipleTheme", true)
         }
         try {
-            val shareIntent = Intent.createChooser(intent, "Share")
+            val shareIntent = Intent.createChooser(intent, context.getString(R.string.share))
             context.startActivity(shareIntent)
         } catch (e: RuntimeException) {
             e.printStackTrace()
-            context.toast(R.string.no_share_activity)
+            context.longToast(R.string.no_share_activity)
         }
     }
 
-
+    @JvmStatic
     fun getMimeType(item: DetailItem): String {
         val fileType = item.getFileType()
         return FileType.MIME_TYPES[fileType] ?: "*/*"

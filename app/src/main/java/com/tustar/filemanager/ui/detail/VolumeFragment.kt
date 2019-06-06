@@ -37,8 +37,7 @@ class VolumeFragment : DetailFragment() {
         }
     }
 
-    override fun onItemClick(item: DetailItem) {
-        super.onItemClick(item)
+    override fun onDetailItemClick(item: DetailItem) {
         if (item.isDirectory) {
             viewModel.loadDirectory(item.uri!!)
             currentNaviItem = DetailNaviItem(

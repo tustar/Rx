@@ -33,9 +33,9 @@ abstract class DetailFragment : BaseStorageFragment(), OnItemClickListener<Detai
             contentAdapter.notifyDataSetChanged()
 
             //
-            detail_tool_bar.visibility = if(value) {
+            detail_tool_bar.visibility = if (value) {
                 View.VISIBLE
-            }  else {
+            } else {
                 View.GONE
             }
         }
@@ -62,11 +62,17 @@ abstract class DetailFragment : BaseStorageFragment(), OnItemClickListener<Detai
         if (isInEditModel) {
             if (item.isChecked) {
                 checkedItems.add(item)
+            } else {
+                checkedItems.remove(item)
             }
             updateToolbar()
             return
         }
+
+        onDetailItemClick(item)
     }
+
+    abstract fun onDetailItemClick(item: DetailItem)
 
     open fun updateToolbar() {
         if (checkedItems.size == 1) {

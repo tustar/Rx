@@ -29,8 +29,7 @@ class AudioFragment : DetailFragment() {
         currentNaviItem = DetailNaviItem(getString(R.string.category_audio))
     }
 
-    override fun onItemClick(item: DetailItem) {
-        super.onItemClick(item)
+    override fun onDetailItemClick(item: DetailItem) {
         item.uri?.let {
             FileUtils.openDocument(context, it)
         }

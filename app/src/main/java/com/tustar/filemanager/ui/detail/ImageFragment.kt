@@ -29,8 +29,7 @@ class ImageFragment : DetailFragment() {
         currentNaviItem = DetailNaviItem(getString(R.string.category_image))
     }
 
-    override fun onItemClick(item: DetailItem) {
-        super.onItemClick(item)
+    override fun onDetailItemClick(item: DetailItem) {
         if (item is ImageItem) {
             when (item.isBucket) {
                 true -> {
