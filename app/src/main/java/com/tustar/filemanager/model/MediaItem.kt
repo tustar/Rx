@@ -23,30 +23,30 @@ open class MediaItem : DetailItem() {
     companion object {
         fun toList(cursor: Cursor): List<MediaItem> {
             val items = mutableListOf<MediaItem>()
-            cursor.moveToFirst()
-            do {
-                val item = MediaItem()
-                //
-                val id = cursor.getLong(cursor.getColumnIndex(
-                        MediaStore.MediaColumns._ID))
-                val displayName = cursor.getString(cursor.getColumnIndex(
-                        MediaStore.MediaColumns.DISPLAY_NAME))
-                val mimeType = cursor.getString(cursor.getColumnIndex(
-                        MediaStore.MediaColumns.MIME_TYPE))
-                val dateModified = cursor.getLong(cursor.getColumnIndex(
-                        MediaStore.MediaColumns.DATE_MODIFIED))
-                val size = cursor.getLong(cursor.getColumnIndex(
-                        MediaStore.MediaColumns.SIZE))
-                //
-                item.name = displayName
-                item.type = mimeType
-                item.lastModified = dateModified
-                item.length = size
-                item.uri = ContentUris.withAppendedId(
-                        MediaStore.Files.getContentUri("external"), id)
-                items += item
-            } while (cursor.moveToNext())
-
+            if (cursor.moveToFirst() && cursor.count > 0) {
+                do {
+                    val item = MediaItem()
+                    //
+                    val id = cursor.getLong(cursor.getColumnIndex(
+                            MediaStore.MediaColumns._ID))
+                    val displayName = cursor.getString(cursor.getColumnIndex(
+                            MediaStore.MediaColumns.DISPLAY_NAME))
+                    val mimeType = cursor.getString(cursor.getColumnIndex(
+                            MediaStore.MediaColumns.MIME_TYPE))
+                    val dateModified = cursor.getLong(cursor.getColumnIndex(
+                            MediaStore.MediaColumns.DATE_MODIFIED))
+                    val size = cursor.getLong(cursor.getColumnIndex(
+                            MediaStore.MediaColumns.SIZE))
+                    //
+                    item.name = displayName
+                    item.type = mimeType
+                    item.lastModified = dateModified
+                    item.length = size
+                    item.uri = ContentUris.withAppendedId(
+                            MediaStore.Files.getContentUri("external"), id)
+                    items += item
+                } while (cursor.moveToNext())
+            }
             return items
         }
     }

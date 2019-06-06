@@ -19,36 +19,37 @@ class ImageItem : MediaItem() {
     companion object {
         fun toBucketList(cursor: Cursor): List<ImageItem> {
             val items = mutableListOf<ImageItem>()
-            cursor.moveToFirst()
-            do {
-                val item = ImageItem()
-                //
-                val count = cursor.getLong(cursor.getColumnIndex(
-                        BaseColumns._COUNT))
-                val id = cursor.getLong(cursor.getColumnIndex(
-                        MediaStore.Images.ImageColumns._ID))
-                val bucketId = cursor.getLong(cursor.getColumnIndex(
-                        MediaStore.Images.ImageColumns.BUCKET_ID))
-                val bucketDisplayName = cursor.getString(cursor.getColumnIndex(
-                        MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME))
-                val displayName = cursor.getString(cursor.getColumnIndex(
-                        MediaStore.Images.ImageColumns.DISPLAY_NAME))
-                val mimeType = cursor.getString(cursor.getColumnIndex(
-                        MediaStore.Images.ImageColumns.MIME_TYPE))
-                val dateModified = cursor.getLong(cursor.getColumnIndex(
-                        MediaStore.Images.ImageColumns.DATE_MODIFIED))
-                //
-                item.bucketId = bucketId
-                item.bucketName = bucketDisplayName
-                item.name = displayName
-                item.type = mimeType
-                item.lastModified = dateModified
-                item.length = count
-                item.uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
-                item.isBucket = true
+            if (cursor.moveToFirst() && cursor.count > 0) {
+                do {
+                    val item = ImageItem()
+                    //
+                    val count = cursor.getLong(cursor.getColumnIndex(
+                            BaseColumns._COUNT))
+                    val id = cursor.getLong(cursor.getColumnIndex(
+                            MediaStore.Images.ImageColumns._ID))
+                    val bucketId = cursor.getLong(cursor.getColumnIndex(
+                            MediaStore.Images.ImageColumns.BUCKET_ID))
+                    val bucketDisplayName = cursor.getString(cursor.getColumnIndex(
+                            MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME))
+                    val displayName = cursor.getString(cursor.getColumnIndex(
+                            MediaStore.Images.ImageColumns.DISPLAY_NAME))
+                    val mimeType = cursor.getString(cursor.getColumnIndex(
+                            MediaStore.Images.ImageColumns.MIME_TYPE))
+                    val dateModified = cursor.getLong(cursor.getColumnIndex(
+                            MediaStore.Images.ImageColumns.DATE_MODIFIED))
+                    //
+                    item.bucketId = bucketId
+                    item.bucketName = bucketDisplayName
+                    item.name = displayName
+                    item.type = mimeType
+                    item.lastModified = dateModified
+                    item.length = count
+                    item.uri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id)
+                    item.isBucket = true
 
-                items += item
-            } while (cursor.moveToNext())
+                    items += item
+                } while (cursor.moveToNext())
+            }
             return items
         }
 

@@ -20,16 +20,18 @@ class RootInfo {
     companion object {
         fun fromRootsCursor(cursor: Cursor): RootInfo {
             val root = RootInfo()
-            cursor.apply {
-                root.rootId = getCursorString(DocumentsContract.Root.COLUMN_ROOT_ID)
-                root.flags = getCursorInt(DocumentsContract.Root.COLUMN_FLAGS)
-                root.icon = getCursorInt(DocumentsContract.Root.COLUMN_ICON)
-                root.title = getCursorString(DocumentsContract.Root.COLUMN_TITLE)
-                root.summary = getCursorString(DocumentsContract.Root.COLUMN_SUMMARY)
-                root.documentId = getCursorString(DocumentsContract.Root.COLUMN_DOCUMENT_ID)
-                root.availableBytes = getCursorLong(DocumentsContract.Root.COLUMN_AVAILABLE_BYTES)
-                root.capacityBytes = getCursorLong(DocumentsContract.Root.COLUMN_CAPACITY_BYTES)
-                root.mimeTypes = getCursorString(DocumentsContract.Root.COLUMN_MIME_TYPES)
+            if (cursor.moveToFirst() && cursor.count > 0) {
+                cursor.apply {
+                    root.rootId = getCursorString(DocumentsContract.Root.COLUMN_ROOT_ID)
+                    root.flags = getCursorInt(DocumentsContract.Root.COLUMN_FLAGS)
+                    root.icon = getCursorInt(DocumentsContract.Root.COLUMN_ICON)
+                    root.title = getCursorString(DocumentsContract.Root.COLUMN_TITLE)
+                    root.summary = getCursorString(DocumentsContract.Root.COLUMN_SUMMARY)
+                    root.documentId = getCursorString(DocumentsContract.Root.COLUMN_DOCUMENT_ID)
+                    root.availableBytes = getCursorLong(DocumentsContract.Root.COLUMN_AVAILABLE_BYTES)
+                    root.capacityBytes = getCursorLong(DocumentsContract.Root.COLUMN_CAPACITY_BYTES)
+                    root.mimeTypes = getCursorString(DocumentsContract.Root.COLUMN_MIME_TYPES)
+                }
             }
 
             return root

@@ -39,59 +39,56 @@ data class StorageItem(@DrawableRes val icon: Int,
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 sm.storageVolumes.forEach { volume ->
                     Logger.d("uuid:${volume.uuid}")
+
                     var availableBytes = 0L
                     var totalBytes = 0L
-                    var icon = getIconResId(volume, sm)
+                    var icon = R.drawable.ic_sd_storage
+                    var isSd = false
+                    var isUsb = false
+                    if (volume.isPrimary) {
+                        icon = R.drawable.ic_root_smartphone
+                    } else {
+                        volume.uuid?.let {
+                            val volumeInfo = StorageUtils.findVolumeByUuid(sm, it)
+                            volumeInfo?.let { volumeInfo ->
+                                val diskInfo = StorageUtils.getDisk(volumeInfo)
+                                diskInfo?.apply {
+                                    when {
+                                        StorageUtils.isSd(diskInfo) ->{
+                                            icon = R.drawable.ic_sd_storage
+                                            isSd = true
+                                        }
+                                        StorageUtils.isUsb(diskInfo) -> {
+                                            icon = R.drawable.ic_usb_storage
+                                            isUsb = true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     try {
-                        if (volume.isPrimary) {
-                            val path = volume.getPath()
-                            val statFs = StatFs(path)
-                            availableBytes = statFs.availableBytes
-                            totalBytes = statFs.totalBytes
-                        } else {
-//                            StorageUtils.queryBytes(context, volume)?.let {
-//                                availableBytes = it.availableBytes
-//                                totalBytes = it.capacityBytes
-//                            }
-                        }
+                        val path = volume.getPath()
+                        val statFs = StatFs(path)
+                        availableBytes = statFs.availableBytes
+                        totalBytes = statFs.totalBytes
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-
 
                     val item = StorageItem(icon = icon,
                             name = volume.getDescription(context),
                             volume = volume,
                             availableBytes = availableBytes,
-                            totalBytes = totalBytes)
+                            totalBytes = totalBytes,
+                            isSd = isSd,
+                            isUsb = isUsb)
                     items.add(item)
                 }
             }
 
             return items
-        }
-
-        private fun getIconResId(volume: StorageVolume, sm: StorageManager): Int {
-            var resId = R.drawable.ic_sd_storage
-            if (volume.isPrimary) {
-                resId = R.drawable.ic_root_smartphone
-            } else {
-                volume.uuid?.let {
-                    val volumeInfo = StorageUtils.findVolumeByUuid(sm, it)
-                    volumeInfo?.let { volumeInfo ->
-                        val diskInfo = StorageUtils.getDisk(volumeInfo)
-                        diskInfo?.apply {
-                            when {
-                                StorageUtils.isSd(diskInfo) -> resId = R.drawable.ic_sd_storage
-                                StorageUtils.isUsb(diskInfo) -> resId = R.drawable.ic_usb_storage
-                            }
-                        }
-                    }
-                }
-            }
-
-            return resId
         }
     }
 }

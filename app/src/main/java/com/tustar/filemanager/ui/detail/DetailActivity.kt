@@ -21,8 +21,6 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
         //
-        checkPermissionRequest(this)
-        //
         params = intent.getParcelableExtra(ARG_DETAIL_PARAMS)
                 ?: throw IllegalArgumentException("Must pass URI of directory to open")
         params.name?.let{
@@ -40,20 +38,6 @@ class DetailActivity : AppCompatActivity() {
         if(detailFragment.onBackPressed()) {
             super.onBackPressed()
         }
-    }
-
-    private fun checkPermissionRequest(activity: FragmentActivity) {
-        val permissions = RxPermissions(activity)
-        permissions.setLogging(true)
-        permissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .subscribe { granted ->
-                    Logger.d("granted = $granted")
-                    if (granted) { // Always true pre-M
-                        // I can control the camera now
-                    } else {
-                        // Oups permission denied
-                    }
-                }
     }
 
     companion object {
